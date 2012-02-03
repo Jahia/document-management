@@ -1,0 +1,15 @@
+
+/.settings
+/.project
+/api/.settings
+/api/target
+/api/.classpath
+/api/.project
+/thumbnails/.settings
+/thumbnails/target
+/thumbnails/.classpath
+/thumbnails/.project
+/viewer/.settings
+/viewer/target
+/viewer/.classpath
+/viewer/.project

@@ -1,0 +1,39 @@
+###############################################################################
+package org.jahia.modules.dm.viewer
+
+#list any import classes here.
+import org.jahia.services.content.rules.*
+import org.slf4j.Logger
+
+expander rules.dsl
+
+#declare any global variables here
+global User user
+global Service service
+global Logger logger
+global DocumentViewerRuleService documentViewerService
+###############################################################################
+
+#rule "Create SWF view of the document"
+#    when
+#		A file content has been modified
+#			- the mimetype group is "pdf|word|rtf|excel|powerpoint|openoffice"
+#    then
+#        Create SWF view for the node
+#end
+
+#rule "Auto-convert viewable document to SWF file"
+#    when
+#		A file content has been modified
+#			- it is a viewable document
+#    then
+#        Convert node to SWF
+#end
+
+#rule "Auto-convert PDF to SWF file"
+#    when
+#		A file content has been modified
+#			- the mimetype matches application/(x-)?pdf
+#    then
+#        Convert node to SWF
+#end

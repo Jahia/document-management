@@ -1,0 +1,13 @@
+<nt = 'http://www.jcp.org/jcr/nt/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+
+[jnt:swfDocumentView] > jnt:fileReference, jmix:size
+ - j:width (long) = '640'
+ - j:height (long) = '480'
+
+[jmix:swfDocumentView] mixin
+ + swfView (nt:resource)
