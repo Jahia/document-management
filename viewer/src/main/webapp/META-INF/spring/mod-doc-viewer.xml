@@ -14,7 +14,7 @@
     </bean>
     
     <bean id="DocumentViewerService" class="org.jahia.modules.dm.viewer.impl.DocumentViewerServiceImpl">
-        <property name="enabled" value="${jahia.dm.viewer.enabled:true}" />
+        <property name="enabled" value="${jahia.dm.viewer.enabled:false}" />
         <property name="supportedDocumentFormats">
             <set><!-- see JCRContentUtils bean definition in applicationcontext-basejahiaconfig.xml for mime types -->
                 <value>pdf</value>
@@ -29,7 +29,7 @@
     </bean>
 
     <bean id="PDF2SWFConverter" class="org.jahia.modules.dm.viewer.impl.PDF2SWFConverterService">
-        <property name="enabled" value="${jahia.dm.viewer.enabled:true}"/>
+        <property name="enabled" value="${jahia.dm.viewer.enabled:false}"/>
         <property name="executablePath" value="${jahia.dm.viewer.pdf2swf:/usr/local/bin/pdf2swf}"/>
         <property name="workingDir" value="file://${java.io.tmpdir}/pdf2swf"/>
         <property name="parameters" value="${jahia.dm.viewer.parameters:-f -T 9 -t -s storeallcharacters}"/>
