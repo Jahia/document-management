@@ -40,6 +40,9 @@
 
 package org.jahia.modules.dm.viewer.tags;
 
+import java.util.Date;
+
+import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 
 import org.jahia.dm.viewer.DocumentViewerService;
@@ -85,14 +88,12 @@ public final class Functions {
         }
         String url = getViewUrl(documentNode);
 
-        if (url == null && createViewIfNotExists) {
+        if (createViewIfNotExists && (url == null || isViewObsolete(documentNode))) {
             DocumentViewerService documentViewService = getViewerService();
-            if (documentViewService.isEnabled()) {
-                documentViewService.createView(documentNode);
-                documentNode.getSession().save();
+            documentViewService.createView(documentNode);
+            documentNode.getSession().save();
 
-                url = getViewUrl(documentNode);
-            }
+            url = getViewUrl(documentNode);
         }
 
         return url;
@@ -113,6 +114,17 @@ public final class Functions {
         DocumentViewerService documentViewService = getViewerService();
 
         return documentViewService != null && documentViewService.canHandle(documentNode);
+    }
+
+    private static boolean isViewObsolete(JCRNodeWrapper documentNode)
+            throws PathNotFoundException, RepositoryException {
+        Date docDate = documentNode.getLastModifiedAsDate();
+        Date swfDate = null;
+        if (docDate != null && documentNode.hasNode("swfView")) {
+            swfDate = documentNode.getNode("swfView").getLastModifiedAsDate();
+        }
+
+        return docDate != null && swfDate != null && docDate.after(swfDate);
     }
 
     private Functions() {

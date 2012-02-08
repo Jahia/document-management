@@ -20,6 +20,13 @@
         <jcr:nodeProperty name="j:width" node="${currentNode}" var="width"/>
         <jcr:nodeProperty name="j:height" node="${currentNode}" var="height"/>
         <a class="jahia-doc-viewer" rel="${swfUrl}" style="width:${functions:default(width.string, '640')}px; height:${functions:default(height.string, '480')}px; display:block"></a>
+        <template:addResources type="inlinejavascript">
+            <script type="text/javascript">
+            $(document).ready(function() {
+                $("a.jahia-doc-viewer").docViewer();
+            });
+            </script>
+        </template:addResources>
     </c:if>
 </c:if>
 </c:if>

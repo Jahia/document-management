@@ -14,5 +14,12 @@
     <c:if test="${not empty swfUrl}">
         <a class="jahia-doc-viewer" rel="${swfUrl}" style="width:640px; height:480px; display:block"></a>
         <template:addResources type="javascript" resources="jquery.min.js,flexpaper/flexpaper_flash.min.js,jahia.swfview.js" />
+        <template:addResources type="inlinejavascript">
+            <script type="text/javascript">
+            $(document).ready(function() {
+            	$("a.jahia-doc-viewer").docViewer();
+            });
+            </script>
+        </template:addResources>
     </c:if>
 </c:if>
