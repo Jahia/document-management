@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
-<%@ taglib prefix="docviewer" uri="http://www.jahia.org/tags/docviewer" %>
+<%@ taglib prefix="dm" uri="http://www.jahia.org/tags/document-management" %>
 <%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
 <c:if test="${renderContext.editMode}">
     <template:addResources type="css" resources="files.css"/>
@@ -10,7 +10,7 @@
     (<fmt:message key="jnt_swfDocumentView.noPreviewInEditMode"/>)
 </c:if>
 <c:if test="${!renderContext.editMode}">
-    <c:url var="swfUrl" value="${docviewer:getViewUrl(currentNode, true)}" context="/"/>
+    <c:url var="swfUrl" value="${dm:getViewUrl(currentNode, true)}" context="/"/>
     <c:if test="${not empty swfUrl}">
         <a class="jahia-doc-viewer" rel="${swfUrl}" style="width:640px; height:480px; display:block"></a>
         <template:addResources type="javascript" resources="jquery.min.js,flexpaper/flexpaper_flash.min.js,jahia.swfview.js" />

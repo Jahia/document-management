@@ -38,26 +38,26 @@
  * please contact the sales department at sales@jahia.com.
  */
 
-package org.jahia.modules.dm.viewer.tags;
+package org.jahia.dm.tags;
 
 import java.util.Date;
 
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 
+import org.jahia.dm.JahiaDocumentManagementBean;
 import org.jahia.dm.viewer.DocumentViewerService;
-import org.jahia.services.SpringContextSingleton;
 import org.jahia.services.content.JCRNodeWrapper;
 
 /**
- * Custom functions, which are exposed into the template scope for document viewer operations.
+ * Custom functions, which are exposed into the template scope for document management operations.
  * 
  * @author Sergiy Shyrkov
  */
 public final class Functions {
 
     private static DocumentViewerService getViewerService() {
-        return (DocumentViewerService) SpringContextSingleton.getBean("DocumentViewerService");
+        return JahiaDocumentManagementBean.getInstance().getDocumentViewerService();
     }
 
     private static String getViewUrl(JCRNodeWrapper documentNode) throws RepositoryException {
@@ -100,6 +100,24 @@ public final class Functions {
     }
 
     /**
+     * Checks if the document converter service is running.
+     * 
+     * @return <code>true</code> if the document converter service is enabled
+     */
+    public static boolean isConverterEnabled() {
+        return JahiaDocumentManagementBean.getInstance().isDocumentConverterServiceEnabled();
+    }
+
+    /**
+     * Checks if the document thumbnail service is available and enabled.
+     * 
+     * @return <code>true</code> if the document thumbnail service is available and enabled
+     */
+    public static boolean isThumbnailEnabled() {
+        return JahiaDocumentManagementBean.getInstance().isDocumentThumbnailServiceEnabled();
+    }
+
+    /**
      * Checks if the provided node is a valid viewable document, i.e. it either already has an SWF view stored or its MIME type is supported
      * for creating that SWF view.
      * 
@@ -114,6 +132,15 @@ public final class Functions {
         DocumentViewerService documentViewService = getViewerService();
 
         return documentViewService != null && documentViewService.canHandle(documentNode);
+    }
+
+    /**
+     * Checks if the document viewer service is available and enabled.
+     * 
+     * @return <code>true</code> if the document viewer service is available and enabled
+     */
+    public static boolean isViewerEnabled() {
+        return JahiaDocumentManagementBean.getInstance().isDocumentViewerServiceEnabled();
     }
 
     private static boolean isViewObsolete(JCRNodeWrapper documentNode)

@@ -16,6 +16,7 @@ global DocumentThumbnailRuleService documentThumbnailService
 
 #rule "Automatically generate thumbnail for the document"
 #    when
+#		Document thumbnail service is enabled
 #		A file content has been modified
 #		    - the mimetype group is "pdf|word|rtf|excel|powerpoint|openoffice"
 #    then

@@ -4,7 +4,7 @@
 <%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
 <%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
-<%@ taglib prefix="docviewer" uri="http://www.jahia.org/tags/docviewer" %>
+<%@ taglib prefix="dm" uri="http://www.jahia.org/tags/document-management" %>
 <c:if test="${renderContext.editMode}">
     <template:addResources type="css" resources="files.css"/>
     <span class="icon ${functions:fileIcon(currentNode.name)}"></span><a href="<c:url value='${currentNode}'/>">${fn:escapeXml(currentNode.name)}</a>
@@ -13,8 +13,8 @@
 <c:if test="${!renderContext.editMode}">
 <jcr:nodeProperty name="j:node" node="${currentNode}" var="docProperty"/>
 <c:set var="doc" value="${not empty docProperty ? docProperty.node : null}"/>
-<c:if test="${not empty doc && docviewer:isViewable(doc)}">
-    <c:url var="swfUrl" value="${docviewer:getViewUrl(doc, true)}" context="/"/>
+<c:if test="${not empty doc && dm:isViewable(doc)}">
+    <c:url var="swfUrl" value="${dm:getViewUrl(doc, true)}" context="/"/>
     <c:if test="${not empty swfUrl}">
         <template:addResources type="javascript" resources="jquery.min.js,flexpaper/flexpaper_flash.min.js,jahia.swfview.js"/>
         <jcr:nodeProperty name="j:width" node="${currentNode}" var="width"/>

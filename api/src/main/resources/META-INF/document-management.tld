@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>Provides tags for the document management tasks</description>
+    <display-name>Jahia Document Management</display-name>
+    <tlib-version>1.0</tlib-version>
+    <short-name>dm</short-name>
+    <uri>http://www.jahia.org/tags/document-management</uri>
+    
+    <function>
+        <description>
+            Returns the SWF view URL for the provided document node if it is available or null otherwise.
+            If the second function parameter is set to true forces the creation of the SWF view for the
+            document if it does not exist yet.  
+        </description>
+        <name>getViewUrl</name>
+        <function-class>org.jahia.dm.tags.Functions</function-class>
+        <function-signature>java.lang.String getViewUrl(org.jahia.services.content.JCRNodeWrapper, boolean)</function-signature>
+        <example><![CDATA[
+            <c:set var="swfUrl" value="${dm:getViewUrl(targetNode, true)}"/>
+            <c:if test="${not empty swfUrl}">
+                ... we have an SWF to display 
+            </c:if>
+        ]]>
+        </example>
+    </function>
+    
+	<function>
+		<description>
+			Checks if the document converter service is running.
+		</description>
+		<name>isConverterEnabled</name>
+		<function-class>org.jahia.dm.tags.Functions</function-class>
+		<function-signature>boolean isConverterEnabled()</function-signature>
+		<example><![CDATA[
+            <c:if test="${dm:isConverterEnabled()}">
+                ... display a button for converting a document 
+            </c:if>
+        ]]>
+		</example>
+	</function>
+
+    <function>
+        <description>
+            Checks if the provided node is a valid viewable document, i.e. it either already has
+            an SWF view stored or its MIME type is supported for creating that SWF view.
+        </description>
+        <name>isViewable</name>
+        <function-class>org.jahia.dm.tags.Functions</function-class>
+        <function-signature>boolean isViewable(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+        <example><![CDATA[
+            <c:if test="${dm:isViewable(targetNode)}">
+                ... display a preview of the document 
+            </c:if>
+        ]]>
+        </example>
+    </function>
+
+    <function>
+        <description>
+            Checks if the document viewer service is available and enabled.
+        </description>
+        <name>isViewerEnabled</name>
+        <function-class>org.jahia.dm.tags.Functions</function-class>
+        <function-signature>boolean isViewerEnabled()</function-signature>
+        <example><![CDATA[
+            <c:if test="${dm:isViewerEnabled()}">
+                ... display a document preview 
+            </c:if>
+        ]]>
+        </example>
+    </function>
+    
+</taglib>

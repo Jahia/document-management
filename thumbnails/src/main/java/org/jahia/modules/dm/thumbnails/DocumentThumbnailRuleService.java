@@ -109,6 +109,17 @@ public class DocumentThumbnailRuleService implements DocumentThumbnailServiceAwa
         }
     }
 
+    /**
+     * Returns <code>true</code> if the document thumbnails service is enabled.
+     * 
+     * @return <code>true</code> if the document thumbnails service is enabled
+     * @throws RepositoryException
+     *             in case of an error
+     */
+    public boolean isEnabled() throws RepositoryException {
+        return thumbnailService != null && thumbnailService.isEnabled();
+    }
+
     protected void scheduleAsJob(JCRNodeWrapper doc, String thumbnailName, int thumbnailSize)
             throws SchedulerException, RepositoryException {
         // execute as a background job
