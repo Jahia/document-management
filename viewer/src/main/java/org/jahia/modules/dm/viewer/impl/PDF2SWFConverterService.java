@@ -54,12 +54,14 @@ import java.util.Map;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jahia.dm.DocumentOperationException;
 import org.jahia.dm.viewer.PDF2SWFConverter;
 import org.jahia.dm.viewer.PDF2SWFConverterAware;
 import org.jahia.services.templates.TemplatePackageApplicationContextLoader.ContextInitializedEvent;
+import org.jahia.utils.StringOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
@@ -124,8 +126,11 @@ public class PDF2SWFConverterService implements PDF2SWFConverter,
 
         int exitValue = 0;
 
+        StringOutputStream out = new StringOutputStream();
+        StringOutputStream err = new StringOutputStream();
         try {
             DefaultExecutor executor = new DefaultExecutor();
+            executor.setStreamHandler(new PumpStreamHandler(out, err));
             if (workingDir != null) {
                 if (workingDir.exists() || workingDir.mkdirs()) {
                     executor.setWorkingDirectory(workingDir);
@@ -134,6 +139,13 @@ public class PDF2SWFConverterService implements PDF2SWFConverter,
             exitValue = executor.execute(cmd);
         } catch (Exception e) {
             throw new DocumentOperationException(e);
+        } finally {
+            if (err.getLength() > 0) {
+                logger.error("Conversion process finished with error. Cause: {}", err.toString());
+            }
+            if (logger.isDebugEnabled() && out.getLength() > 0) {
+                logger.debug(out.toString());
+            }
         }
 
         if (logger.isDebugEnabled()) {
