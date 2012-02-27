@@ -21,7 +21,8 @@
 			} else {
 				$(this).data("docViewer", flashembed(this, {
 	            	src: player,
-	            	version: [10, 0]
+	            	version: [10, 0],
+	            	wmode: 'transparent'
 	            }, opts));
 			}
 		});
