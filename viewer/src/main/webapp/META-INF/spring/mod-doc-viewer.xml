@@ -14,7 +14,6 @@
     </bean>
     
     <bean id="DocumentViewerService" class="org.jahia.modules.dm.viewer.impl.DocumentViewerServiceImpl">
-        <property name="enabled" value="${jahia.dm.viewer.enabled:false}" />
         <property name="supportedDocumentFormats">
             <set><!-- see JCRContentUtils bean definition in applicationcontext-basejahiaconfig.xml for mime types -->
                 <value>pdf</value>
@@ -25,14 +24,15 @@
                 <value>openoffice</value>
             </set>
         </property>
+        <property name="PDF2SWFConverter" ref="PDF2SWFConverter"/>
         <property name="documentConverter" ref="DocumentConverterService"/>
     </bean>
 
     <bean id="PDF2SWFConverter" class="org.jahia.modules.dm.viewer.impl.PDF2SWFConverterService">
-        <property name="enabled" value="${jahia.dm.viewer.enabled:false}"/>
-        <property name="executablePath" value="${jahia.dm.viewer.pdf2swf:/usr/local/bin/pdf2swf}"/>
+        <property name="activate" value="${jahia.dm.viewer.enabled:auto}"/>
+        <property name="executablePath" value="${jahia.dm.viewer.pdf2swf:pdf2swf}"/>
         <property name="workingDir" value="file://${java.io.tmpdir}/pdf2swf"/>
-        <property name="parameters" value="${jahia.dm.viewer.parameters:-f -T 9 -t -s storeallcharacters}"/>
+        <property name="parameters" value="${jahia.dm.viewer.parameters:#{'$'}{input} -o #{'$'}{output} -f -T 9 -t -s storeallcharacters}"/>
     </bean>
     
 </beans>

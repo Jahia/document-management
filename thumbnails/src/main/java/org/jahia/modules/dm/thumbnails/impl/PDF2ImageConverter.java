@@ -17,7 +17,7 @@
  * of the contents of the software. For questions regarding licensing, support, production usage,
  * please contact our team at sales@jahia.com or go to: http://www.jahia.com/license
  */
-package org.jahia.dm.thumbnails;
+package org.jahia.modules.dm.thumbnails.impl;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

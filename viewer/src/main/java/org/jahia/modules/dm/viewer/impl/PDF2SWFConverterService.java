@@ -58,32 +58,36 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jahia.dm.DocumentOperationException;
-import org.jahia.dm.viewer.PDF2SWFConverter;
-import org.jahia.dm.viewer.PDF2SWFConverterAware;
-import org.jahia.services.templates.TemplatePackageApplicationContextLoader.ContextInitializedEvent;
+import org.jahia.dm.utils.ProcessUtils;
 import org.jahia.utils.StringOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.context.ApplicationListener;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Document to SWF converter service that uses pdf2swf from SWFTools for file conversion.
  * 
  * @author Sergiy Shyrkov
  */
-public class PDF2SWFConverterService implements PDF2SWFConverter,
-        ApplicationListener<ContextInitializedEvent> {
+public class PDF2SWFConverterService implements InitializingBean {
 
     private static Logger logger = LoggerFactory.getLogger(PDF2SWFConverterService.class);
 
+    private boolean autodetect;
+
     private boolean enabled;
 
-    private String executablePath;
+    private String executablePath = "pdf2swf";
 
-    private String parameters;
+    private String parameters = "${input} -o ${output} -f -T 9 -t -s storeallcharacters";
 
     private File workingDir;
+
+    public void afterPropertiesSet() throws Exception {
+        if (autodetect) {
+            doAutodetect();
+        }
+    }
 
     public File convert(File inputPdfFile) throws DocumentOperationException {
         if (!isEnabled()) {
@@ -136,7 +140,7 @@ public class PDF2SWFConverterService implements PDF2SWFConverter,
                     executor.setWorkingDirectory(workingDir);
                 }
             }
-            exitValue = executor.execute(cmd);
+            exitValue = executor.execute(cmd, System.getenv());
         } catch (Exception e) {
             throw new DocumentOperationException(e);
         } finally {
@@ -234,28 +238,31 @@ public class PDF2SWFConverterService implements PDF2SWFConverter,
         return File.createTempFile("doc-viewer", null);
     }
 
+    protected void doAutodetect() {
+        logger.info("Checking if the {} is present in the current path", executablePath);
+
+        enabled = ProcessUtils.commandPresent(executablePath, workingDir);
+
+        if (enabled) {
+            logger.info("Found {} in the current system path." + " Service will be enabled.",
+                    executablePath);
+        } else {
+            logger.info("Command {} cannot be found in the current system path."
+                    + " The service will be disabled.", executablePath);
+        }
+    }
+
     protected CommandLine getConvertCommandLine(File inputFile, File outputFile) {
-        CommandLine cmd = new CommandLine(getExecutablePath());
-        cmd.addArgument("${inFile}");
-        cmd.addArgument("-o");
-        cmd.addArgument("${outFile}");
-        cmd.addArguments(getParameters(), false);
+        CommandLine cmd = new CommandLine(executablePath);
+        cmd.addArguments(parameters);
 
         Map<String, File> params = new HashMap<String, File>(2);
-        params.put("inFile", inputFile);
-        params.put("outFile", outputFile);
+        params.put("input", inputFile);
+        params.put("output", outputFile);
 
         cmd.setSubstitutionMap(params);
 
         return cmd;
-    }
-
-    protected String getExecutablePath() {
-        return executablePath;
-    }
-
-    protected String getParameters() {
-        return parameters;
     }
 
     /**
@@ -267,21 +274,19 @@ public class PDF2SWFConverterService implements PDF2SWFConverter,
         return enabled;
     }
 
-    public void onApplicationEvent(ContextInitializedEvent event) {
-        for (PDF2SWFConverterAware bean : BeanFactoryUtils.beansOfTypeIncludingAncestors(
-                event.getContext(), PDF2SWFConverterAware.class).values()) {
-            bean.setPDF2SWFConverter(this);
-        }
-    }
-
     /**
      * Enables or disables the conversion service
      * 
-     * @param enabled
-     *            set to <code>true</code> to enable the service
+     * @param activate
+     *            set to <code>true</code> to enable the service; to <code>false</code> to disable it and to <code>auto</code> to
+     *            auto-detect if the executable is present in the path and than enable the service.
      */
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setActivate(String activate) {
+        this.enabled = Boolean.valueOf(activate);
+        if (!this.enabled && activate != null) {
+            this.autodetect = "auto".equalsIgnoreCase(activate)
+                    || "autodetect".equalsIgnoreCase(activate);
+        }
     }
 
     public void setExecutablePath(String executablePath) {

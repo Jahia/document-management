@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is part of the Enterprise Jahia software.
+
+    Jahia's next-generation, open source CMS stems from a widely acknowledged vision
+    of enterprise application convergence - web, search, document, social and portal -
+    unified by the simplicity of web content management.
+
+    For more information, please visit http://www.jahia.com.
+
+    Copyright (C) 2002-2012 Jahia Solutions Group SA. All rights reserved.
+
+    This Enteprise Jahia software must be used in accordance with the terms contained in the
+    Jahia Solutions Group Terms & Conditions as well as the
+    Jahia Sustainable Enterprise License (JSEL). You may not use this software except
+    in compliance with the Jahia Solutions Group Terms & Conditions and the JSEL.
+    See the license for the rights, obligations and limitations governing use
+    of the contents of the software. For questions regarding licensing, support, production usage,
+    please contact our team at sales@jahia.com or go to: http://www.jahia.com/license
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>jahia-document-management-root</artifactId>
+        <groupId>org.jahia.modules</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>video-thumbnails</artifactId>
+    <name>Jahia Video Thumbnails</name>
+    <packaging>war</packaging>
+    <description>Jahia video thumbnails creation module</description>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.jahia.modules</groupId>
+            <artifactId>jahia-document-management-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-exec</artifactId>
+            <version>1.1</version>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+		                	<Implementation-Title>${project.name}</Implementation-Title>
+		                    <Implementation-Version>${project.version}</Implementation-Version>
+	                    	<Implementation-Vendor>${jahia.manifest.vendor.name}</Implementation-Vendor>
+	                    	<Implementation-Vendor-Id>${jahia.manifest.vendor.id}</Implementation-Vendor-Id>
+	                    	<Implementation-URL>${jahia.manifest.vendor.url}</Implementation-URL>
+		                    <Specification-Title>${project.name}</Specification-Title>
+		                    <Specification-Version>${project.version}</Specification-Version>
+	                    	<Specification-Vendor>${jahia.manifest.vendor.name}</Specification-Vendor>
+                            <package-name>${project.name}</package-name>
+                            <root-folder>${project.artifactId}</root-folder>
+                            <module-type>module</module-type>
+                        </manifestEntries>
+                    </archive>
+					<archiveClasses>true</archiveClasses>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -38,56 +38,57 @@
  * please contact the sales department at sales@jahia.com.
  */
 
-package org.jahia.modules.dm.viewer;
+package org.jahia.dm.utils;
 
-import javax.jcr.RepositoryException;
+import java.io.File;
+import java.util.Map;
 
-import org.drools.spi.KnowledgeHelper;
-import org.jahia.dm.viewer.DocumentViewerService;
-import org.jahia.dm.viewer.DocumentViewerServiceAware;
-import org.jahia.services.content.rules.AddedNodeFact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Service class for converting documents from the right-hand-side (consequences) of rules into SWF files.
+ * Process related utilities.
  * 
  * @author Sergiy Shyrkov
  */
-public class DocumentViewerRuleService implements DocumentViewerServiceAware {
+public final class ProcessUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(DocumentViewerRuleService.class);
+    private static Logger logger = LoggerFactory.getLogger(ProcessUtils.class);
 
-    private DocumentViewerService viewerService;
-
-    /**
-     * Creates the SWF view for the specified file node.
-     * 
-     * @param nodeFact
-     *            the node to create a view for
-     * @param drools
-     *            the rule engine helper class
-     * @throws RepositoryException
-     *             in case of an error
-     */
-    public void createView(AddedNodeFact nodeFact, KnowledgeHelper drools)
-            throws RepositoryException {
-        if (viewerService == null || !viewerService.isEnabled()) {
-            if (logger.isDebugEnabled()) {
-                logger.debug(
-                        "Documen SWF view generation service is not enabled. Skipping generation for node {}",
-                        nodeFact.getPath());
+    public static boolean commandPresent(String executablePath, File workingDir) {
+        boolean present = false;
+        if (logger.isDebugEnabled()) {
+            logger.debug("Checking if the {} is present in the current path", executablePath);
+            Map<String, String> env = System.getenv();
+            for (Map.Entry<String, String> envVar : env.entrySet()) {
+                if ("path".equalsIgnoreCase(envVar.getKey())) {
+                    logger.info("Current PATH is: ", envVar.getValue());
+                    break;
+                }
             }
-            return;
         }
-        try {
-            viewerService.createViewForNode(nodeFact.getNode());
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-    }
 
-    public void setDocumentViewerService(DocumentViewerService service) {
-        this.viewerService = service;
+        Process process = null;
+        try {
+            ProcessBuilder pb = new ProcessBuilder(executablePath);
+            if (workingDir != null) {
+                if (workingDir.exists() || workingDir.mkdirs()) {
+                    pb.directory(workingDir);
+                }
+            }
+            process = pb.start();
+            present = true;
+        } catch (Exception e) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Unable to execute command " + executablePath
+                        + " in the current path. Cause: " + e.getMessage(), e);
+            }
+        } finally {
+            if (process != null) {
+                process.destroy();
+            }
+        }
+
+        return present;
     }
 }

@@ -1,0 +1,26 @@
+###############################################################################
+package org.jahia.modules.dm.thumbnails.video
+
+#list any import classes here.
+import org.jahia.services.content.rules.*
+import org.slf4j.Logger
+
+expander rules.dsl
+
+#declare any global variables here
+global User user
+global Service service
+global Logger logger
+global VideoThumbnailRuleService videoThumbnailService
+###############################################################################
+
+rule "Automatically generate thumbnail for the video"
+    when
+		Video thumbnail service is enabled
+		A file content has been modified
+		    - the mimetype matches video/.*
+    then
+        Create a video thumbnail named "thumbnail" with offset -4 of size "320x240"
+        #Create a video thumbnail named "thumbnail2" with offset -4 of size "640x480"
+        Log "Video thumbnails updated for node " + node.getPath()
+end

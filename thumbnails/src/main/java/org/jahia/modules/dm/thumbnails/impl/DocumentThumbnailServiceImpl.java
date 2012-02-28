@@ -61,8 +61,6 @@ import org.jahia.api.Constants;
 import org.jahia.dm.DocumentOperationException;
 import org.jahia.dm.thumbnails.DocumentThumbnailService;
 import org.jahia.dm.thumbnails.DocumentThumbnailServiceAware;
-import org.jahia.dm.thumbnails.PDF2ImageConverter;
-import org.jahia.dm.thumbnails.PDF2ImageConverterAware;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.templates.TemplatePackageApplicationContextLoader.ContextInitializedEvent;
@@ -78,7 +76,7 @@ import org.springframework.context.ApplicationListener;
  * @author Sergiy Shyrkov
  */
 public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
-        ApplicationListener<ContextInitializedEvent>, PDF2ImageConverterAware {
+        ApplicationListener<ContextInitializedEvent> {
 
     private static final Logger logger = LoggerFactory
             .getLogger(DocumentThumbnailServiceImpl.class);
@@ -109,8 +107,8 @@ public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
                         supportedDocumentFormats);
     }
 
-    public boolean createThumbnail(JCRNodeWrapper fileNode, String thumbnailName, int thumbnailSize)
-            throws RepositoryException, DocumentOperationException {
+    public boolean createThumbnailForNode(JCRNodeWrapper fileNode, String thumbnailName,
+            int thumbnailSize) throws RepositoryException, DocumentOperationException {
         if (!canHandle(fileNode)) {
             return false;
         }
@@ -122,7 +120,7 @@ public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
         BufferedImage image = null;
         BufferedImage thumbnail = null;
         try {
-            image = getImageOfFirstPage(fileNode);
+            image = getImageOfFirstPageForNode(fileNode);
 
             if (image != null) {
                 thumbnail = Thumbnails.of(image).size(thumbnailSize, thumbnailSize)
@@ -148,8 +146,8 @@ public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
         return thumbNode != null;
     }
 
-    public BufferedImage getImageOfFirstPage(JCRNodeWrapper fileNode) throws RepositoryException,
-            DocumentOperationException {
+    public BufferedImage getImageOfFirstPageForNode(JCRNodeWrapper fileNode)
+            throws RepositoryException, DocumentOperationException {
         BufferedImage image = null;
 
         long timer = System.currentTimeMillis();
@@ -204,6 +202,16 @@ public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
         }
 
         return image;
+    }
+
+    public BufferedImage getImageOfPage(File pdfFile, int pageNumber)
+            throws DocumentOperationException {
+        return pdf2ImageConverter.getImageOfPage(pdfFile, pageNumber);
+    }
+
+    public BufferedImage getImageOfPage(InputStream pdfInputStream, int pageNumber)
+            throws DocumentOperationException {
+        return pdf2ImageConverter.getImageOfPage(pdfInputStream, pageNumber);
     }
 
     public boolean isEnabled() {

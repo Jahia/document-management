@@ -41,6 +41,7 @@ package org.jahia.dm;
 
 import org.jahia.dm.thumbnails.DocumentThumbnailService;
 import org.jahia.dm.thumbnails.DocumentThumbnailServiceAware;
+import org.jahia.dm.thumbnails.VideoThumbnailService;
 import org.jahia.dm.viewer.DocumentViewerService;
 import org.jahia.dm.viewer.DocumentViewerServiceAware;
 import org.jahia.services.transform.DocumentConverterService;
@@ -66,8 +67,10 @@ public class JahiaDocumentManagementBean implements DocumentViewerServiceAware,
     private DocumentConverterService documentConverterService;
 
     private DocumentThumbnailService documentThumbnailService;
-
+    
     private DocumentViewerService documentViewerService;
+
+    private VideoThumbnailService videoThumbnailService;
 
     public DocumentConverterService getDocumentConverterService() {
         return documentConverterService;
@@ -79,6 +82,10 @@ public class JahiaDocumentManagementBean implements DocumentViewerServiceAware,
 
     public DocumentViewerService getDocumentViewerService() {
         return documentViewerService;
+    }
+
+    public VideoThumbnailService getVideoThumbnailService() {
+        return videoThumbnailService;
     }
 
     public boolean isDocumentConverterServiceEnabled() {
@@ -93,6 +100,10 @@ public class JahiaDocumentManagementBean implements DocumentViewerServiceAware,
         return documentViewerService != null && documentViewerService.isEnabled();
     }
 
+    public boolean isVideoThumbnailServiceEnabled() {
+        return videoThumbnailService != null && videoThumbnailService.isEnabled();
+    }
+
     public void setDocumentConverterService(DocumentConverterService service) {
         documentConverterService = service;
     }
@@ -103,6 +114,10 @@ public class JahiaDocumentManagementBean implements DocumentViewerServiceAware,
 
     public void setDocumentViewerService(DocumentViewerService service) {
         documentViewerService = service;
+    }
+
+    public void setVideoThumbnailService(VideoThumbnailService videoThumbnailService) {
+        this.videoThumbnailService = videoThumbnailService;
     }
 
 }

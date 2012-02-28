@@ -90,7 +90,7 @@ public final class Functions {
 
         if (createViewIfNotExists && (url == null || isViewObsolete(documentNode))) {
             DocumentViewerService documentViewService = getViewerService();
-            documentViewService.createView(documentNode);
+            documentViewService.createViewForNode(documentNode);
             documentNode.getSession().save();
 
             url = getViewUrl(documentNode);

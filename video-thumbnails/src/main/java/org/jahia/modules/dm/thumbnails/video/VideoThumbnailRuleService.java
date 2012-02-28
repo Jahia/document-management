@@ -38,14 +38,14 @@
  * please contact the sales department at sales@jahia.com.
  */
 
-package org.jahia.modules.dm.thumbnails;
+package org.jahia.modules.dm.thumbnails.video;
 
 import javax.jcr.RepositoryException;
 
 import org.drools.spi.KnowledgeHelper;
 import org.jahia.dm.DocumentOperationJob;
-import org.jahia.dm.thumbnails.DocumentThumbnailService;
-import org.jahia.dm.thumbnails.DocumentThumbnailServiceAware;
+import org.jahia.dm.thumbnails.VideoThumbnailService;
+import org.jahia.dm.thumbnails.VideoThumbnailServiceAware;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.rules.AddedNodeFact;
 import org.jahia.services.scheduler.BackgroundJob;
@@ -57,27 +57,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Service class for generating document thumbnails from the right-hand-side (consequences) of rules.
+ * Service class for generating video thumbnails from the right-hand-side (consequences) of rules.
  * 
+ * @author Cédric Mailleux
  * @author Sergiy Shyrkov
  */
-public class DocumentThumbnailRuleService implements DocumentThumbnailServiceAware {
+public class VideoThumbnailRuleService implements VideoThumbnailServiceAware {
 
-    private static Logger logger = LoggerFactory.getLogger(DocumentThumbnailRuleService.class);
+    private static Logger logger = LoggerFactory.getLogger(VideoThumbnailRuleService.class);
 
     private boolean asBackgroundJob = false;
 
     private SchedulerService schedulerService;
 
-    private DocumentThumbnailService thumbnailService;
+    private VideoThumbnailService thumbnailService;
 
     /**
-     * Generates thumbnail of the specified size for the provided document node.
+     * Generates thumbnail of the specified size for the provided video node.
      * 
      * @param nodeFact
      *            the node to create a view for
      * @param thumbnailName
      *            the name of the thumbnail node
+     * @param thumbnailOffset
+     *            the input time offset in seconds. Specifying a positive offset means that the corresponding streams are delayed by offset
+     *            seconds.
      * @param thumbnailSize
      *            the size of the generated thumbnail
      * @param drools
@@ -85,13 +89,13 @@ public class DocumentThumbnailRuleService implements DocumentThumbnailServiceAwa
      * @throws RepositoryException
      *             in case of an error
      */
-    public void createThumbnail(AddedNodeFact nodeFact, String thumbnailName, int thumbnailSize,
-            KnowledgeHelper drools) throws RepositoryException {
+    public void createThumbnail(AddedNodeFact nodeFact, String thumbnailName,
+            int thumbnailOffset, String thumbnailSize, KnowledgeHelper drools)
+            throws RepositoryException {
         if (thumbnailService == null || !thumbnailService.isEnabled()) {
             if (logger.isDebugEnabled()) {
-                logger.debug(
-                        "Thumbnail generation service is not enabled. Skipping generation for node {}",
-                        nodeFact.getPath());
+                logger.debug("Thumbnail generation service is not enabled."
+                        + " Skipping generation for node {}", nodeFact.getPath());
             }
             return;
         } else if (!thumbnailService.canHandle(nodeFact.getNode())) {
@@ -100,9 +104,10 @@ public class DocumentThumbnailRuleService implements DocumentThumbnailServiceAwa
 
         try {
             if (asBackgroundJob) {
-                scheduleAsJob(nodeFact.getNode(), thumbnailName, thumbnailSize);
+                scheduleAsJob(nodeFact.getNode(), thumbnailName, thumbnailOffset, thumbnailSize);
             } else {
-                thumbnailService.createThumbnailForNode(nodeFact.getNode(), thumbnailName, thumbnailSize);
+                thumbnailService.createThumbnailForNode(nodeFact.getNode(), thumbnailName,
+                        thumbnailOffset, thumbnailSize);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -113,24 +118,23 @@ public class DocumentThumbnailRuleService implements DocumentThumbnailServiceAwa
      * Returns <code>true</code> if the document thumbnails service is enabled.
      * 
      * @return <code>true</code> if the document thumbnails service is enabled
-     * @throws RepositoryException
-     *             in case of an error
      */
-    public boolean isEnabled() throws RepositoryException {
+    public boolean isEnabled() {
         return thumbnailService != null && thumbnailService.isEnabled();
     }
 
-    protected void scheduleAsJob(JCRNodeWrapper doc, String thumbnailName, int thumbnailSize)
-            throws SchedulerException, RepositoryException {
+    protected void scheduleAsJob(JCRNodeWrapper doc, String thumbnailName, int thumbnailOffset,
+            String thumbnailSize) throws SchedulerException, RepositoryException {
         // execute as a background job
-        JobDetail jobDetail = BackgroundJob.createJahiaJob(
-                "Document thumbnail for " + doc.getName(), DocumentThumbnailJob.class);
+        JobDetail jobDetail = BackgroundJob.createJahiaJob("Video thumbnail for " + doc.getName(),
+                VideoThumbnailJob.class);
         JobDataMap jobDataMap = jobDetail.getJobDataMap();
         jobDataMap.put(DocumentOperationJob.JOB_UUID, doc.getIdentifier());
         jobDataMap.put(DocumentOperationJob.JOB_WORKSPACE, doc.getSession().getWorkspace()
                 .getName());
-        jobDataMap.put(DocumentThumbnailJob.THUMBNAIL_NAME, thumbnailName);
-        jobDataMap.put(DocumentThumbnailJob.THUMBNAIL_SIZE, thumbnailSize);
+        jobDataMap.put(VideoThumbnailJob.THUMBNAIL_NAME, thumbnailName);
+        jobDataMap.put(VideoThumbnailJob.THUMBNAIL_OFFSET, thumbnailOffset);
+        jobDataMap.put(VideoThumbnailJob.THUMBNAIL_SIZE, thumbnailSize);
 
         schedulerService.scheduleJobNow(jobDetail);
     }
@@ -139,12 +143,12 @@ public class DocumentThumbnailRuleService implements DocumentThumbnailServiceAwa
         this.asBackgroundJob = asBackgorundJob;
     }
 
-    public void setDocumentThumbnailService(DocumentThumbnailService service) {
-        this.thumbnailService = service;
-    }
-
     public void setSchedulerService(SchedulerService schedulerService) {
         this.schedulerService = schedulerService;
+    }
+
+    public void setVideoThumbnailService(VideoThumbnailService service) {
+        this.thumbnailService = service;
     }
 
 }

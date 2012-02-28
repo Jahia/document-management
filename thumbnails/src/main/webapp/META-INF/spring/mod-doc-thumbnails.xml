@@ -28,6 +28,7 @@
                 <value>openoffice</value>
             </set>
         </property>
+        <property name="PDF2ImageConverter" ref="ICEpdfPDF2ImageConverterService"/>
         <property name="documentConverter" ref="DocumentConverterService"/>
     </bean>
     

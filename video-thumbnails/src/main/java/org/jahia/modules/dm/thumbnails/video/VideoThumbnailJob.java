@@ -37,22 +37,53 @@
  * If you are unsure which license is appropriate for your use,
  * please contact the sales department at sales@jahia.com.
  */
-package org.jahia.dm.viewer;
+package org.jahia.modules.dm.thumbnails.video;
+
+import org.apache.commons.lang.StringUtils;
+import org.jahia.dm.DocumentOperationJob;
+import org.jahia.dm.JahiaDocumentManagementBean;
+import org.jahia.dm.thumbnails.VideoThumbnailService;
+import org.jahia.services.content.JCRNodeWrapper;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Should be implemented by services (Spring-managed beans), wishing to get an instance of {@link PDF2SWFConverter} to be automatically
- * injected as a dependency.
+ * Background task for create a thumbnail for the document.
  * 
+ * @author Cédric Mailleux
  * @author Sergiy Shyrkov
  */
-public interface PDF2SWFConverterAware {
+public class VideoThumbnailJob extends DocumentOperationJob {
 
-    /**
-     * Injects an instance of the {@link PDF2SWFConverter} into the Spring bean.
-     * 
-     * @param service
-     *            an instance of the PDF to SWF converter
-     */
-    void setPDF2SWFConverter(PDF2SWFConverter service);
+    public static final String JOB_WORKSPACE = "workspace";
 
+    private static final Logger logger = LoggerFactory.getLogger(VideoThumbnailJob.class);
+
+    public static final String THUMBNAIL_NAME = "thumbnailName";
+
+    public static final String THUMBNAIL_OFFSET = "offset";
+
+    public static final String THUMBNAIL_SIZE = "thumbnailSize";
+
+    protected void doOperation(JCRNodeWrapper documentNode, JobExecutionContext jobExecutionContext)
+            throws Exception {
+        VideoThumbnailService service = JahiaDocumentManagementBean.getInstance()
+                .getVideoThumbnailService();
+        if (service == null || !service.isEnabled()) {
+            logger.info(
+                    "Thumbnail generation service is not enabled. Skipping generation of a thumbnail for node {}",
+                    documentNode.getPath());
+            return;
+        }
+
+        JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+
+        service.createThumbnailForNode(documentNode,
+                StringUtils.defaultIfBlank(jobDataMap.getString(THUMBNAIL_NAME), "thumbnail"),
+                jobDataMap.getIntValue(THUMBNAIL_OFFSET), jobDataMap.getString(THUMBNAIL_SIZE));
+
+        documentNode.getSession().save();
+    }
 }

@@ -20,19 +20,20 @@
 package org.jahia.dm.thumbnails;
 
 /**
- * Should be implemented by services (Spring-managed beans), wishing to get an instance of {@link PDF2ImageConverter} to be automatically
+ * Should be implemented by services (Spring-managed beans), wishing to get an instance of {@link VideoThumbnailService} to be automatically
  * injected as a dependency.
  * 
+ * @author Cédric Mailleux
  * @author Sergiy Shyrkov
  */
-public interface PDF2ImageConverterAware {
+public interface VideoThumbnailServiceAware {
 
     /**
-     * Injects an instance of the {@link PDF2ImageConverter} into the Spring bean.
+     * Injects an instance of the {@link VideoThumbnailService} into the Spring bean.
      * 
      * @param service
-     *            an instance of the PDF to image converter
+     *            an instance of the video thumbnails generation service
      */
-    void setPDF2ImageConverter(PDF2ImageConverter service);
+    void setVideoThumbnailService(VideoThumbnailService service);
 
 }

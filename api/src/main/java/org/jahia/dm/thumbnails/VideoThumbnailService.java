@@ -19,9 +19,7 @@
  */
 package org.jahia.dm.thumbnails;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.InputStream;
 
 import javax.jcr.RepositoryException;
 
@@ -30,18 +28,19 @@ import org.jahia.services.Serviceable;
 import org.jahia.services.content.JCRNodeWrapper;
 
 /**
- * Document thumbnails generator API.
+ * Video thumbnails generator API.
  * 
+ * @author Cédric Mailleux
  * @author Sergiy Shyrkov
  */
-public interface DocumentThumbnailService extends Serviceable {
+public interface VideoThumbnailService extends Serviceable {
 
     /**
      * Returns <code>true</code> if a thumbnail can be generated for the supplied document, i.e. the thumbnail service is enabled and the
      * document format satisfies the requirements.
      * 
      * @param fileNode
-     *            the document node to generate thumbnail for
+     *            the video node to generate thumbnail for
      * @return <code>true</code> if a thumbnail can be generated for the supplied document, i.e. the thumbnail service is enabled and the
      *         document format satisfies the requirements
      * @throws RepositoryException
@@ -49,62 +48,61 @@ public interface DocumentThumbnailService extends Serviceable {
     boolean canHandle(JCRNodeWrapper fileNode) throws RepositoryException;
 
     /**
-     * Generates thumbnails for the specified document node.
+     * Generates thumbnails for the specified video file node.
      * 
      * @param fileNode
      *            the node to generate thumbnails for
      * @param thumbnailName
      *            the name of the thumbnail node
+     * @param offsetSeconds
+     *            the input time offset in seconds. Specifying a positive offset means that the corresponding streams are delayed by offset
+     *            seconds.
      * @param thumbnailSize
-     *            the size of the generated thumbnail
+     *            the size of the generated thumbnail (e.g. 640x480)
      * @return <code>true</code> if the thumbnail was successfully created; returns <code>false</code> if e.g. the service is disabled or
      *         the document cannot be converted to the required format
      * @throws RepositoryException
      *             in case of repository operation error
      * @throws DocumentOperationException
-     *             in case of a document transformation error
+     *             in case of a video transformation error
      */
-    boolean createThumbnailForNode(JCRNodeWrapper fileNode, String thumbnailName, int thumbnailSize)
-            throws RepositoryException, DocumentOperationException;
-
-    /**
-     * Generates an image for the first page of the specified document.
-     * 
-     * @param fileNode
-     *            the JCR file node to generate image for
-     * @return the generated image for the first page
-     * @throws RepositoryException
-     *             in case of a JCR operation error
-     * @throws DocumentOperationException
-     *             if the document conversion exception occurs
-     */
-    BufferedImage getImageOfFirstPageForNode(JCRNodeWrapper fileNode) throws RepositoryException,
+    boolean createThumbnailForNode(JCRNodeWrapper fileNode, String thumbnailName,
+            int offsetSeconds, String thumbnailSize) throws RepositoryException,
             DocumentOperationException;
 
     /**
-     * Generates an image for the first page of the specified document.
+     * Generates a JPG thumbnail image for the specified video file.
      * 
-     * @param pdfFile
-     *            the PDF file to generate image for
-     * @param pageNumber
-     *            the page number to generate the image for
-     * @return the generated image for the specified page
+     * @param videoFile
+     *            the video file to generate thumbnail for
+     * @param outputFile
+     *            the target thumbnail file descriptor
+     * @param offsetSeconds
+     *            the input time offset in seconds. Specifying a positive offset means that the corresponding streams are delayed by offset
+     *            seconds.
+     * @param size
+     *            the target thumbnail size (e.g. 640x480)
+     * @return the file descriptor for the generated thumbnail image
      * @throws DocumentOperationException
      *             if the document conversion exception occurs
      */
-    BufferedImage getImageOfPage(File pdfFile, int pageNumber) throws DocumentOperationException;
+    boolean generateThumbnail(File videoFile, File outputFile, int offsetSeconds, String size)
+            throws DocumentOperationException;
 
     /**
-     * Generates an image for the first page of the specified document.
+     * Generates a JPG thumbnail image for the specified video file.
      * 
-     * @param pdfInputStream
-     *            the input stream of the PDF document to generate image for
-     * @param pageNumber
-     *            the page number to generate the image for
-     * @return the generated image for the specified page
+     * @param videoFile
+     *            the video file to generate thumbnail for
+     * @param offsetSeconds
+     *            the input time offset in seconds. Specifying a positive offset means that the corresponding streams are delayed by offset
+     *            seconds.
+     * @param size
+     *            the target thumbnail size (e.g. 640x480)
+     * @return the file descriptor for the generated thumbnail image
      * @throws DocumentOperationException
      *             if the document conversion exception occurs
      */
-    BufferedImage getImageOfPage(InputStream pdfInputStream, int pageNumber)
+    File generateThumbnail(File videoFile, int offsetSeconds, String size)
             throws DocumentOperationException;
 }

@@ -40,6 +40,10 @@
 
 package org.jahia.dm.viewer;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import javax.jcr.RepositoryException;
 
 import org.jahia.dm.DocumentOperationException;
@@ -66,6 +70,55 @@ public interface DocumentViewerService extends Serviceable {
     boolean canHandle(JCRNodeWrapper fileNode) throws RepositoryException;
 
     /**
+     * Converts the provided PDF input file into an SWF file.
+     * 
+     * @param inputPdfFile
+     *            the source file
+     * @return the SFW file with the converted content
+     * @throws DocumentOperationException
+     *             in case of a conversion error
+     */
+    File convert(File inputPdfFile) throws DocumentOperationException;
+
+    /**
+     * Converts the provided PDF input file into an SWF file.
+     * 
+     * @param inputPdfFile
+     *            the source file
+     * @param outputSwfFile
+     *            the output file to store converted SWF content into
+     * @return <code>true</code> if the conversion succeeded
+     * @throws DocumentOperationException
+     *             in case of a conversion error
+     */
+    boolean convert(File inputPdfFile, File outputSwfFile) throws DocumentOperationException;
+
+    /**
+     * Converts the provided PDF input stream into an SWF output stream.
+     * 
+     * @param inputPdfStream
+     *            the source PDF input stream
+     * @return the output stream with the converted SWF content
+     * @throws DocumentOperationException
+     *             in case of a conversion error
+     */
+    OutputStream convert(InputStream inputPdfStream) throws DocumentOperationException;
+
+    /**
+     * Converts the provided PDF input stream into an SWF output stream.
+     * 
+     * @param inputPdfStream
+     *            the source PDF input stream
+     * @param outputSwfStream
+     *            the output stream to store the converted SWF content into
+     * @return <code>true</code> if the conversion succeeded
+     * @throws DocumentOperationException
+     *             in case of a conversion error
+     */
+    boolean convert(InputStream inputPdfStream, OutputStream outputSwfStream)
+            throws DocumentOperationException;
+
+    /**
      * Creates the SWF view for the specified file node.
      * 
      * @param fileNode
@@ -78,6 +131,6 @@ public interface DocumentViewerService extends Serviceable {
      *             in case of a document conversion error
      * 
      */
-    boolean createView(JCRNodeWrapper fileNode) throws RepositoryException,
+    boolean createViewForNode(JCRNodeWrapper fileNode) throws RepositoryException,
             DocumentOperationException;
 }

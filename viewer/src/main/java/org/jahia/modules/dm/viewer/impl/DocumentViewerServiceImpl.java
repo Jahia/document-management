@@ -43,6 +43,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 
 import javax.jcr.PathNotFoundException;
@@ -55,8 +57,6 @@ import org.jahia.api.Constants;
 import org.jahia.dm.DocumentOperationException;
 import org.jahia.dm.viewer.DocumentViewerService;
 import org.jahia.dm.viewer.DocumentViewerServiceAware;
-import org.jahia.dm.viewer.PDF2SWFConverter;
-import org.jahia.dm.viewer.PDF2SWFConverterAware;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.templates.TemplatePackageApplicationContextLoader.ContextInitializedEvent;
@@ -67,20 +67,18 @@ import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationListener;
 
 /**
- * The document SWF view generation service.
+ * The document SWF view generation service that uses SWFTools.
  * 
  * @author Sergiy Shyrkov
  */
 public class DocumentViewerServiceImpl implements DocumentViewerService,
-        ApplicationListener<ContextInitializedEvent>, PDF2SWFConverterAware {
+        ApplicationListener<ContextInitializedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(DocumentViewerServiceImpl.class);
 
     private DocumentConverterService documentConverter;
 
-    private boolean enabled = true;
-
-    private PDF2SWFConverter pdf2SWFConverter;
+    private PDF2SWFConverterService pdf2SWFConverter;
 
     private String[] supportedDocumentFormats;
 
@@ -100,7 +98,24 @@ public class DocumentViewerServiceImpl implements DocumentViewerService,
                         supportedDocumentFormats);
     }
 
-    public boolean createView(JCRNodeWrapper fileNode) throws RepositoryException,
+    public File convert(File inputPdfFile) throws DocumentOperationException {
+        return pdf2SWFConverter.convert(inputPdfFile);
+    }
+
+    public boolean convert(File inputPdfFile, File outputSwfFile) throws DocumentOperationException {
+        return pdf2SWFConverter.convert(inputPdfFile, outputSwfFile);
+    }
+
+    public OutputStream convert(InputStream inputPdfStream) throws DocumentOperationException {
+        return pdf2SWFConverter.convert(inputPdfStream);
+    }
+
+    public boolean convert(InputStream inputPdfStream, OutputStream outputSwfStream)
+            throws DocumentOperationException {
+        return pdf2SWFConverter.convert(inputPdfStream, outputSwfStream);
+    }
+
+    public boolean createViewForNode(JCRNodeWrapper fileNode) throws RepositoryException,
             DocumentOperationException {
         if (!isEnabled() || supportedDocumentFormats == null) {
             logger.info(
@@ -220,7 +235,7 @@ public class DocumentViewerServiceImpl implements DocumentViewerService,
     }
 
     public boolean isEnabled() {
-        return enabled && pdf2SWFConverter != null && pdf2SWFConverter.isEnabled();
+        return pdf2SWFConverter != null && pdf2SWFConverter.isEnabled();
     }
 
     public void onApplicationEvent(ContextInitializedEvent event) {
@@ -234,11 +249,7 @@ public class DocumentViewerServiceImpl implements DocumentViewerService,
         this.documentConverter = documentConverter;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public void setPDF2SWFConverter(PDF2SWFConverter service) {
+    public void setPDF2SWFConverter(PDF2SWFConverterService service) {
         pdf2SWFConverter = service;
     }
 

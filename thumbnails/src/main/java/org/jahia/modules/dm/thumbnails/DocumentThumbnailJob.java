@@ -41,8 +41,8 @@ package org.jahia.modules.dm.thumbnails;
 
 import org.apache.commons.lang.StringUtils;
 import org.jahia.dm.DocumentOperationJob;
+import org.jahia.dm.JahiaDocumentManagementBean;
 import org.jahia.dm.thumbnails.DocumentThumbnailService;
-import org.jahia.services.SpringContextSingleton;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -66,8 +66,7 @@ public class DocumentThumbnailJob extends DocumentOperationJob {
 
     protected void doOperation(JCRNodeWrapper documentNode, JobExecutionContext jobExecutionContext)
             throws Exception {
-        DocumentThumbnailService service = (DocumentThumbnailService) SpringContextSingleton
-                .getModuleBean("DocumentThumbnailService");
+        DocumentThumbnailService service = JahiaDocumentManagementBean.getInstance().getDocumentThumbnailService();
         if (service == null || !service.isEnabled()) {
             logger.info(
                     "Thumbnail generation service is not enabled. Skipping generation of a thumbnail for node {}",
@@ -79,7 +78,7 @@ public class DocumentThumbnailJob extends DocumentOperationJob {
 
         int intValue = jobDataMap.getIntValue(THUMBNAIL_SIZE);
 
-        service.createThumbnail(documentNode,
+        service.createThumbnailForNode(documentNode,
                 StringUtils.defaultIfBlank(jobDataMap.getString(THUMBNAIL_NAME), "thumbnail"),
                 intValue > 0 ? intValue : 150);
 

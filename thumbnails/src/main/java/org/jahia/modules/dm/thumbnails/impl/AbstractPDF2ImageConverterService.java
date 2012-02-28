@@ -40,19 +40,12 @@
 
 package org.jahia.modules.dm.thumbnails.impl;
 
-import org.jahia.dm.thumbnails.PDF2ImageConverter;
-import org.jahia.dm.thumbnails.PDF2ImageConverterAware;
-import org.jahia.services.templates.TemplatePackageApplicationContextLoader.ContextInitializedEvent;
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.context.ApplicationListener;
-
 /**
  * Creates images for PDF document pages.
  * 
  * @author Sergiy Shyrkov
  */
-public abstract class AbstractPDF2ImageConverterService implements PDF2ImageConverter,
-        ApplicationListener<ContextInitializedEvent> {
+abstract class AbstractPDF2ImageConverterService implements PDF2ImageConverter {
 
     private boolean enabled = true;
 
@@ -62,12 +55,5 @@ public abstract class AbstractPDF2ImageConverterService implements PDF2ImageConv
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public void onApplicationEvent(ContextInitializedEvent event) {
-        for (PDF2ImageConverterAware bean : BeanFactoryUtils.beansOfTypeIncludingAncestors(
-                event.getContext(), PDF2ImageConverterAware.class).values()) {
-            bean.setPDF2ImageConverter(this);
-        }
     }
 }
