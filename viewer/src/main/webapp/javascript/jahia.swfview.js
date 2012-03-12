@@ -14,7 +14,9 @@
 		return this.each(function() {
 			var opts = allOpts;
 			if (typeof allOpts.SwfFile == 'undefined' && typeof $(this).attr('rel') != 'undefined') {
-				opts = $.extend({}, allOpts, {SwfFile : $(this).attr('rel')});
+                swfFile = $(this).attr('rel');
+                swfFile = swfFile.replace("'","%27");
+                opts = $.extend({}, allOpts, {SwfFile : swfFile});
 			}
 			if (typeof $(this).data("docViewer") != 'undefined') {
 				$(this).data("docViewer").getApi().loadSwf(opts.SwfFile);
