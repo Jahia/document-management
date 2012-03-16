@@ -44,10 +44,14 @@ import java.util.Date;
 
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.jcr.security.Privilege;
 
 import org.jahia.dm.JahiaDocumentManagementBean;
 import org.jahia.dm.viewer.DocumentViewerService;
+import org.jahia.services.content.JCRCallback;
 import org.jahia.services.content.JCRNodeWrapper;
+import org.jahia.services.content.JCRSessionWrapper;
+import org.jahia.services.content.JCRTemplate;
 
 /**
  * Custom functions, which are exposed into the template scope for document management operations.
@@ -81,17 +85,36 @@ public final class Functions {
      * @throws RepositoryException
      *             in case of a JCR exception
      */
-    public static String getViewUrl(JCRNodeWrapper documentNode, boolean createViewIfNotExists)
+    public static String getViewUrl(final JCRNodeWrapper documentNode, boolean createViewIfNotExists)
             throws RepositoryException {
         if (!isViewable(documentNode)) {
             return null;
         }
         String url = getViewUrl(documentNode);
 
-        if (createViewIfNotExists && (url == null || isViewObsolete(documentNode))) {
-            DocumentViewerService documentViewService = getViewerService();
-            documentViewService.createViewForNode(documentNode);
-            documentNode.getSession().save();
+        if (createViewIfNotExists
+                && (url == null || isViewObsolete(documentNode))) {
+            final DocumentViewerService documentViewService = getViewerService();
+            if (!documentNode.hasPermission(Privilege.JCR_MODIFY_PROPERTIES)) {
+                JCRTemplate.getInstance().doExecuteWithSystemSession(null,
+                        documentNode.getSession().getWorkspace().getName(),
+                        documentNode.getSession().getLocale(),
+                        new JCRCallback<Object>() {
+                            public Object doInJCR(JCRSessionWrapper session)
+                                    throws RepositoryException {
+                                JCRNodeWrapper systemDocumentNode = session
+                                        .getNodeByIdentifier(documentNode
+                                                .getIdentifier());
+                                documentViewService
+                                        .createViewForNode(systemDocumentNode);
+                                session.save();
+                                return null;
+                            }
+                        });
+            } else {
+                documentViewService.createViewForNode(documentNode);
+                documentNode.getSession().save();
+            }
 
             url = getViewUrl(documentNode);
         }
