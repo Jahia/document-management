@@ -282,6 +282,7 @@ public class PDF2SWFConverterService implements InitializingBean {
      *            auto-detect if the executable is present in the path and than enable the service.
      */
     public void setActivate(String activate) {
+        activate = activate != null ? activate.trim() : activate;
         this.enabled = Boolean.valueOf(activate);
         if (!this.enabled && activate != null) {
             this.autodetect = "auto".equalsIgnoreCase(activate)
