@@ -32,7 +32,6 @@
 
 	$.fn.docViewer.defaults = {
             Scale : 0.6,
-            key : "@8ec49451bb74034e140$6ad0bffa8b828af2aa4",
             ZoomTransition : 'easeOut',
             ZoomTime : 0.5,
             ZoomInterval : 0.2,
