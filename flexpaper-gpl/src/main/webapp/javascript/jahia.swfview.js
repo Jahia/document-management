@@ -8,7 +8,7 @@
  */
 ;(function($) {
 	$.fn.docViewer = function(options) {
-		var player = (typeof contextJsParameters != 'undefined' && typeof contextJsParameters.contextPath != 'undefined' ? contextJsParameters.contextPath : '') + '/modules/document-viewer/javascript/flexpaper/FlexPaperViewer.swf';
+		var player = (typeof contextJsParameters != 'undefined' && typeof contextJsParameters.contextPath != 'undefined' ? contextJsParameters.contextPath : '') + '/modules/flexpaper-gpl/javascript/flexpaper/FlexPaperViewer.swf';
 		var allOpts = $.extend({}, $.fn.docViewer.defaults, options);
 		
 		return this.each(function() {
