@@ -75,10 +75,10 @@
         </pluginRepository>
     </pluginRepositories>
     
-	<modules>
-		<module>api</module>
+    <modules>
+        <module>api</module>
         <module>thumbnails</module>
-		<module>video-thumbnails</module>
+        <module>video-thumbnails</module>
         <module>viewer</module>
-	</modules>
+    </modules>
 </project>
