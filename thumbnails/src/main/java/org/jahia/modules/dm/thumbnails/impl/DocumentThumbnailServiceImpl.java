@@ -51,8 +51,6 @@ import javax.jcr.Binary;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 
-import net.coobird.thumbnailator.Thumbnails;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -63,6 +61,8 @@ import org.jahia.dm.thumbnails.DocumentThumbnailService;
 import org.jahia.dm.thumbnails.DocumentThumbnailServiceAware;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
+import org.jahia.services.image.JahiaImageService;
+import org.jahia.services.image.JahiaImageService.ResizeType;
 import org.jahia.services.templates.TemplatePackageApplicationContextLoader.ContextInitializedEvent;
 import org.jahia.services.transform.DocumentConverterService;
 import org.slf4j.Logger;
@@ -85,10 +85,12 @@ public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
 
     private boolean enabled = true;
 
+    private JahiaImageService imageService;
+
     private PDF2ImageConverter pdf2ImageConverter;
 
     private String[] supportedDocumentFormats;
-
+    
     private boolean usePNGForThumbnailImage = true;
 
     public boolean canHandle(JCRNodeWrapper fileNode) throws RepositoryException {
@@ -123,8 +125,7 @@ public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
             image = getImageOfFirstPageForNode(fileNode);
 
             if (image != null) {
-                thumbnail = Thumbnails.of(image).size(thumbnailSize, thumbnailSize)
-                        .asBufferedImage();
+                thumbnail = imageService.resizeImage(image, thumbnailSize, thumbnailSize, ResizeType.ADJUST_SIZE);
                 thumbNode = storeThumbnailNode(fileNode, thumbnail, thumbnailName);
                 if (logger.isDebugEnabled()) {
                     logger.debug("Generated thumbnail {} for node {} in {} ms", new Object[] {
@@ -231,6 +232,10 @@ public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public void setImageService(JahiaImageService imageService) {
+        this.imageService = imageService;
     }
 
     public void setPDF2ImageConverter(PDF2ImageConverter service) {

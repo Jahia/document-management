@@ -30,6 +30,7 @@
         </property>
         <property name="PDF2ImageConverter" ref="ICEpdfPDF2ImageConverterService"/>
         <property name="documentConverter" ref="DocumentConverterService"/>
+        <property name="imageService" ref="${imageService}"/>
     </bean>
     
     <bean id="ICEpdfPDF2ImageConverterService" class="org.jahia.modules.dm.thumbnails.impl.ICEpdfPDF2ImageConverterService"/>
