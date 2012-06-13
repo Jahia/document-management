@@ -5,14 +5,20 @@
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
 <%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
 <%@ taglib prefix="dm" uri="http://www.jahia.org/tags/document-management" %>
-<c:if test="${renderContext.editMode}">
-    <template:addResources type="css" resources="files.css"/>
-    <span class="icon ${functions:fileIcon(currentNode.name)}"></span><a href="<c:url value='${currentNode}'/>">${fn:escapeXml(currentNode.name)}</a>
-    (<fmt:message key="jnt_swfDocumentView.noPreviewInEditMode"/>)
-</c:if>
-<c:if test="${!renderContext.editMode}">
 <jcr:nodeProperty name="j:node" node="${currentNode}" var="docProperty"/>
 <c:set var="doc" value="${not empty docProperty ? docProperty.node : null}"/>
+<c:if test="${renderContext.editMode}">
+    <c:if test="${not empty doc}">
+        <template:addResources type="css" resources="files.css"/>
+        <span class="icon ${functions:fileIcon(doc.name)}"></span>
+        <a href="<c:url value='${doc.url}'/>">${fn:escapeXml(doc.name)}</a>
+        (<fmt:message key="jnt_swfDocumentView.noPreviewInEditMode"/>)
+    </c:if>
+    <c:if test="${empty doc}">
+       <fmt:message key="jnt_swfDocumentView.noDocumentSelected"/> 
+    </c:if>
+</c:if>
+<c:if test="${!renderContext.editMode}">
 <c:if test="${not empty doc && dm:isViewable(doc)}">
     <c:url var="swfUrl" value="${dm:getViewUrl(doc, true)}" context="/"/>
     <c:if test="${not empty swfUrl}">
