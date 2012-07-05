@@ -26,27 +26,27 @@ window.FlexPaperViewer = window.$f = function() {
 			ZoomTransition : config.ZoomTransition,
 			ZoomTime : config.ZoomTime,
 			ZoomInterval : config.ZoomInterval,
-			FitPageOnLoad : config.FitPageOnLoad,
-			FitWidthOnLoad : config.FitWidthOnLoad,
-			FullScreenAsMaxWindow : config.FullScreenAsMaxWindow,
-			ProgressiveLoading : config.ProgressiveLoading,
+			FitPageOnLoad : config.FitPageOnLoad+'',
+			FitWidthOnLoad : config.FitWidthOnLoad+'',
+			FullScreenAsMaxWindow : config.FullScreenAsMaxWindow+'',
+			ProgressiveLoading : config.ProgressiveLoading+'',
 			MinZoomSize : config.MinZoomSize,
 			MaxZoomSize : config.MaxZoomSize,
-			SearchMatchAll : config.SearchMatchAll,
+			SearchMatchAll : config.SearchMatchAll+'',
 			SearchServiceUrl : config.SearchServiceUrl,
 			InitViewMode : config.InitViewMode,
-			BitmapBasedRendering : config.BitmapBasedRendering,
+			BitmapBasedRendering : config.BitmapBasedRendering+'',
 			StartAtPage : config.StartAtPage,
-			PrintPaperAsBitmap : config.PrintPaperAsBitmap,
-			AutoAdjustPrintSize : config.AutoAdjustPrintSize,
+			PrintPaperAsBitmap : config.PrintPaperAsBitmap+'',
+			AutoAdjustPrintSize : config.AutoAdjustPrintSize+'',
 			
-			ViewModeToolsVisible : config.ViewModeToolsVisible,
-			ZoomToolsVisible : config.ZoomToolsVisible,
-			NavToolsVisible : config.NavToolsVisible,
-			CursorToolsVisible : config.CursorToolsVisible,
-			SearchToolsVisible : config.SearchToolsVisible,
-			  
-			RenderingOrder : config.RenderingOrder,
+			ViewModeToolsVisible : config.ViewModeToolsVisible+'',
+			ZoomToolsVisible : config.ZoomToolsVisible+'',
+			NavToolsVisible : config.NavToolsVisible+'',
+			CursorToolsVisible : config.CursorToolsVisible+'',
+			SearchToolsVisible : config.SearchToolsVisible+'',
+			
+			EncodeURI : config.EncodeURI+'',  
 			  
 			localeChain : config.localeChain,
 			key : config.key
@@ -311,6 +311,7 @@ function onDocumentPrinted(){
 		getHTML: function(opts, conf) {
 
 			opts = extend({}, opts);
+			opts.id = opts.id + (" " + Math.random()).slice(9);
 			
 			/******* OBJECT tag and it's attributes *******/
 			var html = '<object width="' + opts.width + 
@@ -359,8 +360,7 @@ function onDocumentPrinted(){
 				html += '<param name="flashvars" value=\'' + vars + '\' />';
 			}
 			
-			html += "</object>";	
-			
+			html += "</object>";
 			return html;				
 		},
 		
