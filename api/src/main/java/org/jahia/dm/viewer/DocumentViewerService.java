@@ -119,6 +119,22 @@ public interface DocumentViewerService extends Serviceable {
             throws DocumentOperationException;
 
     /**
+     * Creates the PDF view for the specified file node.
+     * 
+     * @param fileNode
+     *            the node to create a view for
+     * @return <code>true</code> if the view was successfully created; returns <code>false</code> if e.g. the service is disabled or the
+     *         document cannot be converted to the required format
+     * @throws RepositoryException
+     *             in case of an error
+     * @throws DocumentOperationException
+     *             in case of a document conversion error
+     * 
+     */
+    boolean createPdfViewForNode(JCRNodeWrapper fileNode) throws RepositoryException,
+            DocumentOperationException;
+
+    /**
      * Creates the SWF view for the specified file node.
      * 
      * @param fileNode

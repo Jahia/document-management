@@ -115,6 +115,63 @@ public class DocumentViewerServiceImpl implements DocumentViewerService,
         return pdf2SWFConverter.convert(inputPdfStream, outputSwfStream);
     }
 
+    public boolean createPdfViewForNode(JCRNodeWrapper fileNode) throws RepositoryException,
+            DocumentOperationException {
+        if (!isEnabled() || !documentConverter.isEnabled()) {
+            logger.info("Viewer service is disabled. Skip converting node {}", fileNode.getPath());
+            return false;
+        }
+
+        long timer = System.currentTimeMillis();
+
+        if (fileNode.isNodeType("nt:file")) {
+            File outFile = null;
+            try {
+                outFile = getAsPDF(fileNode);
+                if (outFile != null) {
+                    fileNode.getSession().checkout(fileNode);
+                    JCRNodeWrapper pdfNode = null;
+                    try {
+                        pdfNode = fileNode.getNode("pdfView");
+                    } catch (PathNotFoundException e) {
+                        if (!fileNode.isNodeType("jmix:pdfDocumentView")) {
+                            fileNode.addMixin("jmix:pdfDocumentView");
+                        }
+                        pdfNode = fileNode.addNode("pdfView", "nt:resource");
+                    }
+
+                    BufferedInputStream convertedStream = new BufferedInputStream(
+                            new FileInputStream(outFile));
+                    try {
+                        if (pdfNode.hasProperty(Constants.JCR_DATA)) {
+                            pdfNode.getProperty(Constants.JCR_DATA).remove();
+                        }
+                        pdfNode.setProperty(Constants.JCR_DATA, new BinaryImpl(convertedStream));
+                        pdfNode.setProperty(Constants.JCR_MIMETYPE, "application/pdf");
+                        Calendar lastModified = Calendar.getInstance();
+                        pdfNode.setProperty(Constants.JCR_LASTMODIFIED, lastModified);
+                        fileNode.getSession().save();
+                    } finally {
+                        IOUtils.closeQuietly(convertedStream);
+                    }
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Created PDF view for node {} in {} ms", fileNode.getPath(),
+                                System.currentTimeMillis() - timer);
+                    }
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            } finally {
+                FileUtils.deleteQuietly(outFile);
+            }
+        } else {
+            logger.warn("Path should correspond to a file node. Skipping node {}",
+                    fileNode.getPath());
+        }
+
+        return true;
+    }
+
     public boolean createViewForNode(JCRNodeWrapper fileNode) throws RepositoryException,
             DocumentOperationException {
         if (!isEnabled() || supportedDocumentFormats == null) {

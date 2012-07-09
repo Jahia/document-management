@@ -12,17 +12,17 @@
         <template:addResources type="css" resources="files.css"/>
         <span class="icon ${functions:fileIcon(doc.name)}"></span>
         <a href="<c:url value='${doc.url}'/>">${fn:escapeXml(doc.name)}</a>
-        (<fmt:message key="jnt_swfDocumentView.noPreviewInEditMode"/>)
+        (<fmt:message key="jnt_documentPreview.noPreviewInEditMode"/>)
     </c:if>
     <c:if test="${empty doc}">
-       <fmt:message key="jnt_swfDocumentView.noDocumentSelected"/> 
+       <fmt:message key="jnt_documentPreview.noDocumentSelected"/> 
     </c:if>
 </c:if>
 <c:if test="${!renderContext.editMode}">
 <c:if test="${not empty doc && dm:isViewable(doc)}">
     <c:url var="swfUrl" value="${dm:getViewUrl(doc, true)}" context="/"/>
     <c:if test="${not empty swfUrl}">
-        <template:addResources type="javascript" resources="jquery.min.js,flexpaper/flexpaper_flash.min.js,jahia.swfview.js"/>
+        <template:addResources type="javascript" resources="jquery.min.js,flexpaper/flexpaper_flash.min.js,jahia.swfview.min.js"/>
         <jcr:nodeProperty name="j:width" node="${currentNode}" var="width"/>
         <jcr:nodeProperty name="j:height" node="${currentNode}" var="height"/>
         <a class="jahia-doc-viewer" rel="${swfUrl}" style="width:${functions:default(width.string, '640')}px; height:${functions:default(height.string, '480')}px; display:block"></a>

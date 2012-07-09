@@ -49,6 +49,7 @@ import javax.jcr.security.Privilege;
 import org.jahia.dm.JahiaDocumentManagementBean;
 import org.jahia.dm.viewer.DocumentViewerService;
 import org.jahia.services.content.JCRCallback;
+import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.JCRTemplate;
@@ -59,6 +60,57 @@ import org.jahia.services.content.JCRTemplate;
  * @author Sergiy Shyrkov
  */
 public final class Functions {
+
+    private static String getPdfViewUrl(JCRNodeWrapper documentNode) throws RepositoryException {
+        if (documentNode.isNodeType("jmix:pdfDocumentView") && documentNode.hasNode("pdfView")) {
+            String docUrl = documentNode.getUrl();
+            return docUrl + (docUrl.contains("?") ? "&amp;t=pdfView" : "?t=pdfView");
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the URL of the PDF view for the document or <code>null</code> is the view is not available. If the
+     * <code>createViewIfNotExists</code> is set to true also forces the creation of the PDF view
+     * 
+     * @param documentNode
+     *            the document node to be viewed
+     * @param createViewIfNotExists
+     *            if set to true it forces the creation of the SWF view
+     * @return the URL of the PDF view for the document or <code>null</code> is the view is not available
+     * @throws RepositoryException
+     *             in case of a JCR exception
+     */
+    public static String getPdfViewUrl(final JCRNodeWrapper documentNode,
+            boolean createViewIfNotExists) throws RepositoryException {
+        String url = getPdfViewUrl(documentNode);
+
+        if (createViewIfNotExists && isViewerEnabled()
+                && (url == null || isPdfViewObsolete(documentNode))) {
+            final DocumentViewerService viewerService = getViewerService();
+            if (!documentNode.hasPermission(Privilege.JCR_MODIFY_PROPERTIES)) {
+                JCRTemplate.getInstance().doExecuteWithSystemSession(null,
+                        documentNode.getSession().getWorkspace().getName(),
+                        documentNode.getSession().getLocale(), new JCRCallback<Object>() {
+                            public Object doInJCR(JCRSessionWrapper session)
+                                    throws RepositoryException {
+                                JCRNodeWrapper systemDocumentNode = session
+                                        .getNodeByIdentifier(documentNode.getIdentifier());
+                                viewerService.createPdfViewForNode(systemDocumentNode);
+                                session.save();
+                                return null;
+                            }
+                        });
+            } else {
+                viewerService.createPdfViewForNode(documentNode);
+            }
+
+            url = getPdfViewUrl(documentNode);
+        }
+
+        return url;
+    }
 
     private static DocumentViewerService getViewerService() {
         return JahiaDocumentManagementBean.getInstance().getDocumentViewerService();
@@ -87,33 +139,26 @@ public final class Functions {
      */
     public static String getViewUrl(final JCRNodeWrapper documentNode, boolean createViewIfNotExists)
             throws RepositoryException {
-        if (!isViewable(documentNode)) {
-            return null;
-        }
         String url = getViewUrl(documentNode);
 
-        if (createViewIfNotExists
+        if (createViewIfNotExists && isViewable(documentNode)
                 && (url == null || isViewObsolete(documentNode))) {
             final DocumentViewerService documentViewService = getViewerService();
             if (!documentNode.hasPermission(Privilege.JCR_MODIFY_PROPERTIES)) {
                 JCRTemplate.getInstance().doExecuteWithSystemSession(null,
                         documentNode.getSession().getWorkspace().getName(),
-                        documentNode.getSession().getLocale(),
-                        new JCRCallback<Object>() {
+                        documentNode.getSession().getLocale(), new JCRCallback<Object>() {
                             public Object doInJCR(JCRSessionWrapper session)
                                     throws RepositoryException {
                                 JCRNodeWrapper systemDocumentNode = session
-                                        .getNodeByIdentifier(documentNode
-                                                .getIdentifier());
-                                documentViewService
-                                        .createViewForNode(systemDocumentNode);
+                                        .getNodeByIdentifier(documentNode.getIdentifier());
+                                documentViewService.createViewForNode(systemDocumentNode);
                                 session.save();
                                 return null;
                             }
                         });
             } else {
                 documentViewService.createViewForNode(documentNode);
-                documentNode.getSession().save();
             }
 
             url = getViewUrl(documentNode);
@@ -129,6 +174,27 @@ public final class Functions {
      */
     public static boolean isConverterEnabled() {
         return JahiaDocumentManagementBean.getInstance().isDocumentConverterServiceEnabled();
+    }
+
+    /**
+     * Checks if the document is of type PDF.
+     * 
+     * @return <code>true</code> if the node is a PDF document
+     */
+    public static boolean isPdf(JCRNodeWrapper node) {
+        return node.isFile()
+                && JCRContentUtils.isMimeTypeGroup(node.getFileContent().getContentType(), "pdf");
+    }
+
+    private static boolean isPdfViewObsolete(JCRNodeWrapper documentNode)
+            throws PathNotFoundException, RepositoryException {
+        Date docDate = documentNode.getNode("jcr:content").getLastModifiedAsDate();
+        Date swfDate = null;
+        if (docDate != null && documentNode.hasNode("pdfView")) {
+            swfDate = documentNode.getNode("pdfView").getLastModifiedAsDate();
+        }
+
+        return docDate != null && swfDate != null && docDate.after(swfDate);
     }
 
     /**
@@ -168,7 +234,7 @@ public final class Functions {
 
     private static boolean isViewObsolete(JCRNodeWrapper documentNode)
             throws PathNotFoundException, RepositoryException {
-        Date docDate = documentNode.getLastModifiedAsDate();
+        Date docDate = documentNode.getNode("jcr:content").getLastModifiedAsDate();
         Date swfDate = null;
         if (docDate != null && documentNode.hasNode("swfView")) {
             swfDate = documentNode.getNode("swfView").getLastModifiedAsDate();

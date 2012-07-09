@@ -13,6 +13,24 @@
     
     <function>
         <description>
+            Returns the PDF view URL for the provided document node if it is available or null otherwise.
+            If the second function parameter is set to true forces the creation of the PDF view for the
+            document if it does not exist yet.  
+        </description>
+        <name>getPdfViewUrl</name>
+        <function-class>org.jahia.dm.tags.Functions</function-class>
+        <function-signature>java.lang.String getPdfViewUrl(org.jahia.services.content.JCRNodeWrapper, boolean)</function-signature>
+        <example><![CDATA[
+            <c:set var="pdfUrl" value="${dm:getPdfViewUrl(targetNode, true)}"/>
+            <c:if test="${not empty pdfUrl}">
+                ... we have a PDF to display 
+            </c:if>
+        ]]>
+        </example>
+    </function>
+    
+    <function>
+        <description>
             Returns the SWF view URL for the provided document node if it is available or null otherwise.
             If the second function parameter is set to true forces the creation of the SWF view for the
             document if it does not exist yet.  
@@ -60,6 +78,21 @@
         </example>
     </function>
 
+    <function>
+        <description>
+            Checks if the document is of a PDF type.
+        </description>
+        <name>isPdf</name>
+        <function-class>org.jahia.dm.tags.Functions</function-class>
+        <function-signature>boolean isPdf(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+        <example><![CDATA[
+            <c:if test="${dm:isPdf(node)}">
+                ... handle PDF document 
+            </c:if>
+        ]]>
+        </example>
+    </function>
+    
     <function>
         <description>
             Checks if the document viewer service is available and enabled.

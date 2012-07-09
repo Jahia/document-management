@@ -5,9 +5,12 @@
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
 
-[jnt:swfDocumentView] > jnt:fileReference, jmix:size
+[jnt:documentPreview] > jnt:fileReference, jmix:size
  - j:width (long) = '640'
  - j:height (long) = '480'
+
+[jmix:pdfDocumentView] mixin
+ + pdfView (nt:resource)
 
 [jmix:swfDocumentView] mixin
  + swfView (nt:resource)
