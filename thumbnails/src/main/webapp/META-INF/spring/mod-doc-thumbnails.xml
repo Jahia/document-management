@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <bean name="DocumentThumbnailRuleService" class="org.jahia.modules.dm.thumbnails.DocumentThumbnailRuleService">
-        <property name="asBackgroundJob" value="${jahia.dm.thumbnails.asBackgroundJob:false}" />
+        <property name="asBackgroundJob" value="${jahia.dm.thumbnails.asBackgroundJob:true}" />
         <property name="schedulerService" ref="SchedulerService"/>
     </bean>
     
