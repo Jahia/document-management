@@ -104,9 +104,16 @@ public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
             return false;
         }
 
-        return fileNode.isNodeType("nt:file")
-                && JCRContentUtils.isMimeTypeGroup(fileNode.getFileContent().getContentType(),
-                        supportedDocumentFormats);
+        boolean canHandle = false;
+        if (fileNode.isNodeType("nt:file")) {
+            String mimeType = fileNode.getFileContent().getContentType();
+            canHandle = JCRContentUtils.isMimeTypeGroup(mimeType, supportedDocumentFormats);
+            if (canHandle && !JCRContentUtils.isMimeTypeGroup(mimeType, "pdf")) {
+                // if the document is not a PDF and the document converter service is not enabled, we cannot handle the file
+                canHandle = documentConverter != null && documentConverter.isEnabled();
+            }
+        }
+        return canHandle;
     }
 
     public boolean createThumbnailForNode(JCRNodeWrapper fileNode, String thumbnailName,
