@@ -66,7 +66,7 @@ public class VideoThumbnailRuleService implements VideoThumbnailServiceAware {
 
     private static Logger logger = LoggerFactory.getLogger(VideoThumbnailRuleService.class);
 
-    private boolean asBackgroundJob = false;
+    private boolean asBackgroundJob = true;
 
     private SchedulerService schedulerService;
 

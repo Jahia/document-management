@@ -65,7 +65,7 @@ public class DocumentThumbnailRuleService implements DocumentThumbnailServiceAwa
 
     private static Logger logger = LoggerFactory.getLogger(DocumentThumbnailRuleService.class);
 
-    private boolean asBackgroundJob = false;
+    private boolean asBackgroundJob = true;
 
     private SchedulerService schedulerService;
 
