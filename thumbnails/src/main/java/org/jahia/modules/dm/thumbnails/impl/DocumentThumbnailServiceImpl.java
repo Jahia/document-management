@@ -267,7 +267,6 @@ public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
             node = fileNode.getNode(thumbnailName);
         } catch (PathNotFoundException e) {
             node = fileNode.addNode(thumbnailName, Constants.JAHIANT_RESOURCE);
-            node.addMixin(Constants.JAHIAMIX_IMAGE);
         }
 
         if (node.hasProperty(Constants.JCR_DATA)) {
