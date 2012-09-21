@@ -261,6 +261,10 @@ public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
             String thumbnailName) throws RepositoryException, IOException {
         JCRNodeWrapper node = null;
 
+        if (thumbnail == null) {
+            return null;
+        }
+
         fileNode.getSession().checkout(fileNode);
 
         try {
