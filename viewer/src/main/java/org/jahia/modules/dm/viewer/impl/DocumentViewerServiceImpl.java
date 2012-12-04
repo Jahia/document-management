@@ -49,6 +49,9 @@ import java.util.Calendar;
 
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.jcr.version.Version;
+import javax.jcr.version.VersionIterator;
+import javax.jcr.version.VersionManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -236,6 +239,27 @@ public class DocumentViewerServiceImpl implements DocumentViewerService,
                         Calendar lastModified = Calendar.getInstance();
                         swfNode.setProperty(Constants.JCR_LASTMODIFIED, lastModified);
                         fileNode.getSession().save();
+                        // Handle version after thumbnail creation
+                        VersionManager vm = fileNode.getSession().getWorkspace().getVersionManager();
+                        VersionIterator vi = vm.getVersionHistory(fileNode.getPath()).getAllLinearVersions();
+                        Version current = null;
+                        while (vi.hasNext()) {
+                            current = (Version) vi.next();
+                        }
+                        if (current != null ) {
+                            String label = null;
+                            for (String l :vm.getVersionHistory(fileNode.getPath()).getVersionLabels(current)) {
+                                if (l.startsWith(fileNode.getSession().getWorkspace().getName() + "_uploaded_at_")) {
+                                    label = l;
+                                    break;
+                                }
+                            }
+                            if (label != null) {
+                                Version v = vm.checkin(fileNode.getPath());
+                                vm.getVersionHistory(fileNode.getPath()).addVersionLabel(v.getName(),label,true);
+                            }
+                        }
+
                     } finally {
                         IOUtils.closeQuietly(convertedStream);
                     }
