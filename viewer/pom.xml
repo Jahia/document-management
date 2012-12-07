@@ -48,13 +48,13 @@
     <artifactId>document-viewer</artifactId>
     <name>Jahia Document Viewer</name>
     <packaging>war</packaging>
-    <description>Jahia document flash viewer module</description>
+    <description>Jahia document flash and HTML5 viewer module</description>
     
     <dependencies>
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>jahia-document-management-api</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
 
         <dependency>
