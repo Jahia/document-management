@@ -255,7 +255,7 @@ public class DocumentViewerServiceImpl implements DocumentViewerService,
                                 }
                             }
                             if (label != null) {
-                                Version v = vm.checkin(fileNode.getPath());
+                                Version v = vm.checkpoint(fileNode.getPath());
                                 vm.getVersionHistory(fileNode.getPath()).addVersionLabel(v.getName(),label,true);
                             }
                         }
