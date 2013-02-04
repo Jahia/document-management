@@ -50,18 +50,30 @@
     <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>Jahia collection of document management modules</description>
-    
+
     <scm>
         <connection>scm:git:git@github.com:Jahia/document-management.git</connection>
         <url>scm:git:git@github.com:Jahia/document-management.git</url>
         <developerConnection>scm:git:git@github.com:Jahia/document-management.git</developerConnection>
     </scm>
-    
+
     <repositories>
         <repository>
             <id>jahiaRepository</id>
             <name>Jahia's Maven Repository</name>
             <url>http://maven.jahia.org/maven2</url>
+        </repository>
+        <repository>
+            <id>jahia-public</id>
+            <name>Jahia Public Repository</name>
+            <url>https://devtools.jahia.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
     <pluginRepositories>
@@ -71,7 +83,7 @@
             <url>http://maven.jahia.org/maven2</url>
         </pluginRepository>
     </pluginRepositories>
-    
+
     <modules>
         <module>api</module>
         <module>thumbnails</module>
