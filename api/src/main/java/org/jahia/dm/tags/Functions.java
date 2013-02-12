@@ -46,7 +46,7 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.security.Privilege;
 
-import org.jahia.dm.JahiaDocumentManagementBean;
+import org.jahia.dm.DocumentManagement;
 import org.jahia.dm.viewer.DocumentViewerService;
 import org.jahia.services.content.JCRCallback;
 import org.jahia.services.content.JCRContentUtils;
@@ -113,7 +113,7 @@ public final class Functions {
     }
 
     private static DocumentViewerService getViewerService() {
-        return JahiaDocumentManagementBean.getInstance().getDocumentViewerService();
+        return DocumentManagement.getInstance().getDocumentViewerService();
     }
 
     private static String getViewUrl(JCRNodeWrapper documentNode) throws RepositoryException {
@@ -173,7 +173,7 @@ public final class Functions {
      * @return <code>true</code> if the document converter service is enabled
      */
     public static boolean isConverterEnabled() {
-        return JahiaDocumentManagementBean.getInstance().isDocumentConverterServiceEnabled();
+        return DocumentManagement.getInstance().isDocumentConverterServiceEnabled();
     }
 
     /**
@@ -203,7 +203,7 @@ public final class Functions {
      * @return <code>true</code> if the document thumbnail service is available and enabled
      */
     public static boolean isThumbnailEnabled() {
-        return JahiaDocumentManagementBean.getInstance().isDocumentThumbnailServiceEnabled();
+        return DocumentManagement.getInstance().isDocumentThumbnailServiceEnabled();
     }
 
     /**
@@ -229,7 +229,7 @@ public final class Functions {
      * @return <code>true</code> if the document viewer service is available and enabled
      */
     public static boolean isViewerEnabled() {
-        return JahiaDocumentManagementBean.getInstance().isDocumentViewerServiceEnabled();
+        return DocumentManagement.getInstance().isDocumentViewerServiceEnabled();
     }
 
     private static boolean isViewObsolete(JCRNodeWrapper documentNode)

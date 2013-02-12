@@ -96,7 +96,7 @@ public abstract class DocumentOperationJob extends BackgroundJob {
                             doOperation(node, jobExecutionContext);
                         } catch (ItemNotFoundException e) {
                             logger.warn(
-                                    "Unable to find node with ID {} in {} workspace. Skipp executing a document operation.",
+                                    "Unable to find node with ID {} in {} workspace. Skip executing a document operation.",
                                     uuid, workspace);
                         } catch (Exception e) {
                             logger.error(

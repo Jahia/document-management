@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:osgi="http://www.eclipse.org/gemini/blueprint/schema/blueprint"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.eclipse.org/gemini/blueprint/schema/blueprint http://www.eclipse.org/gemini/blueprint/schema/blueprint/gemini-blueprint.xsd">
+
+    <bean name="DocumentManagement" class="org.jahia.dm.DocumentManagement" factory-method="getInstance"/>
+    
+    <osgi:reference id="DocumentViewerServiceRef" interface="org.jahia.dm.viewer.DocumentViewerService" availability="optional">
+        <osgi:reference-listener bind-method="bindDocumentViewerService" unbind-method="unbindDocumentViewerService" ref="DocumentManagement"/>
+    </osgi:reference>
+    
+    <osgi:reference id="DocumentThumbnailServiceRef" interface="org.jahia.dm.thumbnails.DocumentThumbnailService" availability="optional">
+        <osgi:reference-listener bind-method="bindDocumentThumbnailService" unbind-method="unbindDocumentThumbnailService" ref="DocumentManagement"/>
+    </osgi:reference>
+    
+    <osgi:reference id="VideoThumbnailServiceRef" interface="org.jahia.dm.thumbnails.VideoThumbnailService" availability="optional">
+        <osgi:reference-listener bind-method="bindVideoThumbnailService" unbind-method="unbindVideoThumbnailService" ref="DocumentManagement"/>
+    </osgi:reference>
+    
+</beans>

@@ -58,28 +58,22 @@ import org.apache.jackrabbit.value.BinaryImpl;
 import org.jahia.api.Constants;
 import org.jahia.dm.DocumentOperationException;
 import org.jahia.dm.thumbnails.DocumentThumbnailService;
-import org.jahia.dm.thumbnails.DocumentThumbnailServiceAware;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.image.JahiaImageService;
 import org.jahia.services.image.JahiaImageService.ResizeType;
-import org.jahia.services.templates.TemplatePackageApplicationContextLoader.ContextInitializedEvent;
 import org.jahia.services.transform.DocumentConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.context.ApplicationListener;
 
 /**
  * The document thumbnail generation service.
  * 
  * @author Sergiy Shyrkov
  */
-public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
-        ApplicationListener<ContextInitializedEvent> {
+public class DocumentThumbnailServiceImpl implements DocumentThumbnailService {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(DocumentThumbnailServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(DocumentThumbnailServiceImpl.class);
 
     private DocumentConverterService documentConverter;
 
@@ -224,13 +218,6 @@ public class DocumentThumbnailServiceImpl implements DocumentThumbnailService,
 
     public boolean isEnabled() {
         return enabled && pdf2ImageConverter != null && pdf2ImageConverter.isEnabled();
-    }
-
-    public void onApplicationEvent(ContextInitializedEvent event) {
-        for (DocumentThumbnailServiceAware bean : BeanFactoryUtils.beansOfTypeIncludingAncestors(
-                event.getContext(), DocumentThumbnailServiceAware.class).values()) {
-            bean.setDocumentThumbnailService(this);
-        }
     }
 
     public void setDocumentConverter(DocumentConverterService documentConverter) {

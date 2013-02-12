@@ -7,7 +7,7 @@
  
     For more information, please visit http://www.jahia.com.
  
-    Copyright (C) 2002-2012 Jahia Solutions Group SA. All rights reserved.
+    Copyright (C) 2002-2013 Jahia Solutions Group SA. All rights reserved.
  
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License
@@ -47,59 +47,41 @@
     </parent>
     <artifactId>document-thumbnails</artifactId>
     <name>Jahia Document Thumbnails</name>
-    <packaging>war</packaging>
+    <packaging>bundle</packaging>
     <description>Jahia document thumbnails creation module</description>
-    
-    <repositories>
-        <repository>
-            <id>icepdf</id>
-            <name>ICEpdf Maven Repository</name>
-            <url>http://anonsvn.icefaces.org/repo/maven2/releases</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
     
     <dependencies>
         <dependency>
             <groupId>org.jahia.modules</groupId>
-            <artifactId>jahia-document-management-api</artifactId>
+            <artifactId>document-management-api</artifactId>
             <version>2.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.icepdf</groupId>
             <artifactId>icepdf-core</artifactId>
-            <version>4.3.2</version>
+            <version>4.3.3</version>
         </dependency>
     </dependencies>
     
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
                 <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Implementation-Title>${project.name}</Implementation-Title>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                            <Implementation-Vendor>${jahia.manifest.vendor.name}</Implementation-Vendor>
-                            <Implementation-Vendor-Id>${jahia.manifest.vendor.id}</Implementation-Vendor-Id>
-                            <Implementation-URL>${jahia.manifest.vendor.url}</Implementation-URL>
-                            <Specification-Title>${project.name}</Specification-Title>
-                            <Specification-Version>${project.version}</Specification-Version>
-                            <Specification-Vendor>${jahia.manifest.vendor.name}</Specification-Vendor>
-                            <package-name>${project.name}</package-name>
-                            <root-folder>${project.artifactId}</root-folder>
-                            <module-type>module</module-type>
-                        </manifestEntries>
-                    </archive>
-                    <archiveClasses>true</archiveClasses>
+                    <instructions>
+                        <Jahia-Depends>document-management-api</Jahia-Depends>
+                        <_removeheaders>
+                            Include-Resource,
+                            Private-Package,
+                            Embed-Dependency,
+                            Embed-Transitive,
+                            Jahia-Static-Resources
+                        </_removeheaders>
+                    </instructions>
                 </configuration>
             </plugin>
         </plugins>

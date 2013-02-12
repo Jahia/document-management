@@ -62,17 +62,13 @@ import org.apache.jackrabbit.value.BinaryImpl;
 import org.jahia.api.Constants;
 import org.jahia.dm.DocumentOperationException;
 import org.jahia.dm.thumbnails.VideoThumbnailService;
-import org.jahia.dm.thumbnails.VideoThumbnailServiceAware;
 import org.jahia.dm.utils.ProcessUtils;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
-import org.jahia.services.templates.TemplatePackageApplicationContextLoader.ContextInitializedEvent;
 import org.jahia.utils.StringOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationListener;
 
 /**
  * The video thumbnail generation service.
@@ -80,8 +76,7 @@ import org.springframework.context.ApplicationListener;
  * @author Cédric Mailleux
  * @author Sergiy Shyrkov
  */
-public class VideoThumbnailServiceImpl implements VideoThumbnailService,
-        ApplicationListener<ContextInitializedEvent>, InitializingBean {
+public class VideoThumbnailServiceImpl implements VideoThumbnailService, InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(VideoThumbnailServiceImpl.class);
 
@@ -253,13 +248,6 @@ public class VideoThumbnailServiceImpl implements VideoThumbnailService,
 
     public boolean isEnabled() {
         return enabled;
-    }
-
-    public void onApplicationEvent(ContextInitializedEvent event) {
-        for (VideoThumbnailServiceAware bean : BeanFactoryUtils.beansOfTypeIncludingAncestors(
-                event.getContext(), VideoThumbnailServiceAware.class).values()) {
-            bean.setVideoThumbnailService(this);
-        }
     }
 
     /**

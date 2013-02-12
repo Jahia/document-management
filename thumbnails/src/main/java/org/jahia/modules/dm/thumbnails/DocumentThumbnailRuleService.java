@@ -45,7 +45,6 @@ import javax.jcr.RepositoryException;
 import org.drools.spi.KnowledgeHelper;
 import org.jahia.dm.DocumentOperationJob;
 import org.jahia.dm.thumbnails.DocumentThumbnailService;
-import org.jahia.dm.thumbnails.DocumentThumbnailServiceAware;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.rules.AddedNodeFact;
 import org.jahia.services.scheduler.BackgroundJob;
@@ -61,7 +60,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Sergiy Shyrkov
  */
-public class DocumentThumbnailRuleService implements DocumentThumbnailServiceAware {
+public class DocumentThumbnailRuleService {
 
     private static Logger logger = LoggerFactory.getLogger(DocumentThumbnailRuleService.class);
 

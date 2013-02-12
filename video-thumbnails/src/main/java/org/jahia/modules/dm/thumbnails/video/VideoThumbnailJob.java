@@ -40,8 +40,8 @@
 package org.jahia.modules.dm.thumbnails.video;
 
 import org.apache.commons.lang.StringUtils;
+import org.jahia.dm.DocumentManagement;
 import org.jahia.dm.DocumentOperationJob;
-import org.jahia.dm.JahiaDocumentManagementBean;
 import org.jahia.dm.thumbnails.VideoThumbnailService;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.quartz.JobDataMap;
@@ -69,8 +69,7 @@ public class VideoThumbnailJob extends DocumentOperationJob {
 
     protected void doOperation(JCRNodeWrapper documentNode, JobExecutionContext jobExecutionContext)
             throws Exception {
-        VideoThumbnailService service = JahiaDocumentManagementBean.getInstance()
-                .getVideoThumbnailService();
+        VideoThumbnailService service = DocumentManagement.getInstance().getVideoThumbnailService();
         if (service == null || !service.isEnabled()) {
             logger.info(
                     "Thumbnail generation service is not enabled. Skipping generation of a thumbnail for node {}",

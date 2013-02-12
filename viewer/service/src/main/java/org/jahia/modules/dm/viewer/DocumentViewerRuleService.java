@@ -37,51 +37,56 @@
  * If you are unsure which license is appropriate for your use,
  * please contact the sales department at sales@jahia.com.
  */
-package org.jahia.modules.dm.thumbnails;
 
-import org.apache.commons.lang.StringUtils;
-import org.jahia.dm.DocumentManagement;
-import org.jahia.dm.DocumentOperationJob;
-import org.jahia.dm.thumbnails.DocumentThumbnailService;
-import org.jahia.services.content.JCRNodeWrapper;
-import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
+package org.jahia.modules.dm.viewer;
+
+import javax.jcr.RepositoryException;
+
+import org.drools.spi.KnowledgeHelper;
+import org.jahia.dm.viewer.DocumentViewerService;
+import org.jahia.services.content.rules.AddedNodeFact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Background task for create a thumbnail for the document.
+ * Service class for converting documents from the right-hand-side (consequences) of rules into SWF files.
  * 
  * @author Sergiy Shyrkov
  */
-public class DocumentThumbnailJob extends DocumentOperationJob {
+public class DocumentViewerRuleService {
 
-    public static final String JOB_WORKSPACE = "workspace";
+    private static Logger logger = LoggerFactory.getLogger(DocumentViewerRuleService.class);
 
-    private static final Logger logger = LoggerFactory.getLogger(DocumentThumbnailJob.class);
+    private DocumentViewerService viewerService;
 
-    public static final String THUMBNAIL_NAME = "thumbnailName";
-
-    public static final String THUMBNAIL_SIZE = "thumbnailSize";
-
-    protected void doOperation(JCRNodeWrapper documentNode, JobExecutionContext jobExecutionContext)
-            throws Exception {
-        DocumentThumbnailService service = DocumentManagement.getInstance().getDocumentThumbnailService();
-        if (service == null || !service.isEnabled()) {
-            logger.info(
-                    "Thumbnail generation service is not enabled. Skipping generation of a thumbnail for node {}",
-                    documentNode.getPath());
+    /**
+     * Creates the SWF view for the specified file node.
+     * 
+     * @param nodeFact
+     *            the node to create a view for
+     * @param drools
+     *            the rule engine helper class
+     * @throws RepositoryException
+     *             in case of an error
+     */
+    public void createView(AddedNodeFact nodeFact, KnowledgeHelper drools)
+            throws RepositoryException {
+        if (viewerService == null || !viewerService.isEnabled()) {
+            if (logger.isDebugEnabled()) {
+                logger.debug(
+                        "Documen SWF view generation service is not enabled. Skipping generation for node {}",
+                        nodeFact.getPath());
+            }
             return;
         }
+        try {
+            viewerService.createViewForNode(nodeFact.getNode());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
 
-        JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
-
-        int intValue = jobDataMap.getIntValue(THUMBNAIL_SIZE);
-
-        service.createThumbnailForNode(documentNode,
-                StringUtils.defaultIfBlank(jobDataMap.getString(THUMBNAIL_NAME), "thumbnail"),
-                intValue > 0 ? intValue : 150);
-
-        documentNode.getSession().save();
+    public void setDocumentViewerService(DocumentViewerService service) {
+        this.viewerService = service;
     }
 }
