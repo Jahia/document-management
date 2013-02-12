@@ -17,3 +17,12 @@
 /viewer/target
 /viewer/.classpath
 /viewer/.project
+/viewer/service/.classpath
+
+/viewer/service/.project
+/viewer/service/.settings
+/viewer/service/target
+/viewer/web/.settings
+/viewer/web/target
+/viewer/web/.classpath
+/viewer/web/.project
