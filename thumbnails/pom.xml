@@ -74,7 +74,14 @@
                 <configuration>
                     <instructions>
                         <Jahia-Depends>document-management-api</Jahia-Depends>
-                        <Import-Package>!com.sun.image.codec.jpeg,!com.sun.medialib.mlib,!sun.awt.image,!sun.awt.image.codec,!sun.security.action,*,${jahia.modules.importPackage}</Import-Package>
+                        <Import-Package>
+                            *,
+                            com.sun.image.codec.jpeg;resolution:=optional,
+                            com.sun.medialib.mlib;resolution:=optional,
+                            sun.awt.image;resolution:=optional,
+                            sun.awt.image.codec;resolution:=optional,
+                            sun.security.action;resolution:=optional,
+                            ${jahia.modules.importPackage}</Import-Package>
                         <_removeheaders>
                             Include-Resource,
                             Private-Package,
