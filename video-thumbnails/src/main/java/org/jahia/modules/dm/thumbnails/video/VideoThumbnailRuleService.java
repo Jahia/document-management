@@ -40,9 +40,7 @@
 
 package org.jahia.modules.dm.thumbnails.video;
 
-import javax.jcr.RepositoryException;
-
-import org.drools.spi.KnowledgeHelper;
+import org.drools.core.spi.KnowledgeHelper;
 import org.jahia.dm.DocumentOperationJob;
 import org.jahia.dm.thumbnails.VideoThumbnailService;
 import org.jahia.services.content.JCRNodeWrapper;
@@ -55,9 +53,11 @@ import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.RepositoryException;
+
 /**
  * Service class for generating video thumbnails from the right-hand-side (consequences) of rules.
- * 
+ *
  * @author Cédric Mailleux
  * @author Sergiy Shyrkov
  */
@@ -73,23 +73,17 @@ public class VideoThumbnailRuleService {
 
     /**
      * Generates thumbnail of the specified size for the provided video node.
-     * 
-     * @param nodeFact
-     *            the node to create a view for
-     * @param thumbnailName
-     *            the name of the thumbnail node
-     * @param thumbnailOffset
-     *            the input time offset in seconds. Specifying a positive offset means that the corresponding streams are delayed by offset
-     *            seconds.
-     * @param thumbnailSize
-     *            the size of the generated thumbnail
-     * @param drools
-     *            the rule engine helper class
-     * @throws RepositoryException
-     *             in case of an error
+     *
+     * @param nodeFact        the node to create a view for
+     * @param thumbnailName   the name of the thumbnail node
+     * @param thumbnailOffset the input time offset in seconds. Specifying a positive offset means that the corresponding streams are delayed by offset
+     *                        seconds.
+     * @param thumbnailSize   the size of the generated thumbnail
+     * @param drools          the rule engine helper class
+     * @throws RepositoryException in case of an error
      */
     public void createThumbnail(AddedNodeFact nodeFact, String thumbnailName,
-            int thumbnailOffset, String thumbnailSize, KnowledgeHelper drools)
+                                int thumbnailOffset, String thumbnailSize, KnowledgeHelper drools)
             throws RepositoryException {
         if (thumbnailService == null || !thumbnailService.isEnabled()) {
             if (logger.isDebugEnabled()) {
@@ -115,7 +109,7 @@ public class VideoThumbnailRuleService {
 
     /**
      * Returns <code>true</code> if the document thumbnails service is enabled.
-     * 
+     *
      * @return <code>true</code> if the document thumbnails service is enabled
      */
     public boolean isEnabled() {
@@ -123,7 +117,7 @@ public class VideoThumbnailRuleService {
     }
 
     protected void scheduleAsJob(JCRNodeWrapper doc, String thumbnailName, int thumbnailOffset,
-            String thumbnailSize) throws SchedulerException, RepositoryException {
+                                 String thumbnailSize) throws SchedulerException, RepositoryException {
         // execute as a background job
         JobDetail jobDetail = BackgroundJob.createJahiaJob("Video thumbnail for " + doc.getName(),
                 VideoThumbnailJob.class);

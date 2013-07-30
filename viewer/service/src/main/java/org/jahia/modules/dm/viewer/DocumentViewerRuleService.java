@@ -40,17 +40,17 @@
 
 package org.jahia.modules.dm.viewer;
 
-import javax.jcr.RepositoryException;
-
-import org.drools.spi.KnowledgeHelper;
+import org.drools.core.spi.KnowledgeHelper;
 import org.jahia.dm.viewer.DocumentViewerService;
 import org.jahia.services.content.rules.AddedNodeFact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.RepositoryException;
+
 /**
  * Service class for converting documents from the right-hand-side (consequences) of rules into SWF files.
- * 
+ *
  * @author Sergiy Shyrkov
  */
 public class DocumentViewerRuleService {
@@ -61,13 +61,10 @@ public class DocumentViewerRuleService {
 
     /**
      * Creates the SWF view for the specified file node.
-     * 
-     * @param nodeFact
-     *            the node to create a view for
-     * @param drools
-     *            the rule engine helper class
-     * @throws RepositoryException
-     *             in case of an error
+     *
+     * @param nodeFact the node to create a view for
+     * @param drools   the rule engine helper class
+     * @throws RepositoryException in case of an error
      */
     public void createView(AddedNodeFact nodeFact, KnowledgeHelper drools)
             throws RepositoryException {
