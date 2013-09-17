@@ -40,9 +40,7 @@
 
 package org.jahia.modules.dm.thumbnails;
 
-import javax.jcr.RepositoryException;
-
-import org.drools.spi.KnowledgeHelper;
+import org.drools.core.spi.KnowledgeHelper;
 import org.jahia.dm.DocumentOperationJob;
 import org.jahia.dm.thumbnails.DocumentThumbnailService;
 import org.jahia.services.content.JCRNodeWrapper;
@@ -55,9 +53,11 @@ import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.RepositoryException;
+
 /**
  * Service class for generating document thumbnails from the right-hand-side (consequences) of rules.
- * 
+ *
  * @author Sergiy Shyrkov
  */
 public class DocumentThumbnailRuleService {
@@ -72,20 +72,15 @@ public class DocumentThumbnailRuleService {
 
     /**
      * Generates thumbnail of the specified size for the provided document node.
-     * 
-     * @param nodeFact
-     *            the node to create a view for
-     * @param thumbnailName
-     *            the name of the thumbnail node
-     * @param thumbnailSize
-     *            the size of the generated thumbnail
-     * @param drools
-     *            the rule engine helper class
-     * @throws RepositoryException
-     *             in case of an error
+     *
+     * @param nodeFact      the node to create a view for
+     * @param thumbnailName the name of the thumbnail node
+     * @param thumbnailSize the size of the generated thumbnail
+     * @param drools        the rule engine helper class
+     * @throws RepositoryException in case of an error
      */
     public void createThumbnail(AddedNodeFact nodeFact, String thumbnailName, int thumbnailSize,
-            KnowledgeHelper drools) throws RepositoryException {
+                                KnowledgeHelper drools) throws RepositoryException {
         if (thumbnailService == null || !thumbnailService.isEnabled()) {
             if (logger.isDebugEnabled()) {
                 logger.debug(
@@ -110,10 +105,9 @@ public class DocumentThumbnailRuleService {
 
     /**
      * Returns <code>true</code> if the document thumbnails service is enabled.
-     * 
+     *
      * @return <code>true</code> if the document thumbnails service is enabled
-     * @throws RepositoryException
-     *             in case of an error
+     * @throws RepositoryException in case of an error
      */
     public boolean isEnabled() throws RepositoryException {
         return thumbnailService != null && thumbnailService.isEnabled();
