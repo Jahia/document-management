@@ -48,7 +48,7 @@
     <artifactId>document-viewer</artifactId>
     <name>Jahia Document Viewer</name>
     <packaging>bundle</packaging>
-    <description>Jahia document flash and HTML5 viewer module</description>
+    <description>Jahia document flash viewer module</description>
     
     <build>
         <plugins>
@@ -59,13 +59,7 @@
                 <configuration>
                     <instructions>
                         <Jahia-Depends>default,document-management-api</Jahia-Depends>
-                        <Import-Package>*,${jahia.modules.importPackage},org.jahia.dm.tags</Import-Package>
-                        <_removeheaders>
-                            Include-Resource,
-                            Private-Package,
-                            Embed-Dependency,
-                            Embed-Transitive
-                        </_removeheaders>
+                        <Import-Package>org.jahia.dm.tags,${jahia.plugin.projectPackageImport}</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>

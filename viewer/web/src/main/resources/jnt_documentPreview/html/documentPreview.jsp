@@ -22,10 +22,12 @@
 <c:if test="${not empty doc && dm:isViewable(doc)}">
     <c:url var="swfUrl" value="${dm:getViewUrl(doc, true)}" context="/"/>
     <c:if test="${not empty swfUrl}">
-        <template:addResources type="javascript" resources="jquery.min.js,flexpaper/flexpaper_flash.min.js,jahia.swfview.min.js"/>
+        <template:addResources type="javascript" resources="jquery.min.js,flexpaper/flexpaper.min.js,jahia.swfview.min.js"/>
         <jcr:nodeProperty name="j:width" node="${currentNode}" var="width"/>
         <jcr:nodeProperty name="j:height" node="${currentNode}" var="height"/>
-        <a class="jahia-doc-viewer" rel="${swfUrl}" style="width:${functions:default(width.string, '640')}px; height:${functions:default(height.string, '480')}px; display:block"></a>
+        <c:set var="w" value="${functions:default(width.string, '640')}"/><c:set var="w" value="${w == 0 ? '100%' : functions:stringConcatenation(w, 'px', '')}"/>
+        <c:set var="h" value="${functions:default(height.string, '480')}"/><c:set var="h" value="${h == 0 ? '100%' : functions:stringConcatenation(h, 'px', '')}"/>
+        <a class="jahia-doc-viewer" rel="${swfUrl}" style="width:${w}; height:${h}; display:block"></a>
         <template:addResources type="inlinejavascript">
             <script type="text/javascript">
             $(document).ready(function() {
