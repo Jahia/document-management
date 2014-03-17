@@ -102,7 +102,7 @@ public abstract class DocumentOperationJob extends BackgroundJob {
                         } catch (Exception e) {
                             logger.error(
                                     "Error executing operation on the document node "
-                                            + node.getPath(), e);
+                                            + (node != null ? node.getPath() : uuid), e);
                         }
 
                         return Boolean.TRUE;
