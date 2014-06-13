@@ -77,6 +77,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
 
+import javax.jcr.lock.Lock;
+import javax.jcr.lock.LockException;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.version.Version;
@@ -217,7 +219,7 @@ public class DocumentViewerServiceImpl implements DocumentViewerService {
                         supportedDocumentFormats)) {
             String sourceContentType = fileNode.getFileContent().getContentType();
             File inFile = null;
-            boolean sourceAvilable = true;
+            boolean sourceAvailable = true;
             try {
                 if (JCRContentUtils.isMimeTypeGroup(sourceContentType, "pdf")) {
                     inFile = File.createTempFile("doc-viewer-source", null);
@@ -227,9 +229,9 @@ public class DocumentViewerServiceImpl implements DocumentViewerService {
                 }
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
-                sourceAvilable = false;
+                sourceAvailable = false;
             } finally {
-                if (!sourceAvilable) {
+                if (!sourceAvailable) {
                     FileUtils.deleteQuietly(inFile);
                 }
             }
@@ -248,8 +250,9 @@ public class DocumentViewerServiceImpl implements DocumentViewerService {
                         swfNode = fileNode.getNode("swfView");
                     } catch (PathNotFoundException e) {
                         if (!fileNode.isNodeType("jmix:swfDocumentView")) {
-                            fileNode.addMixin("jmix:swfDocumentView");
+                    		fileNode.addMixin("jmix:swfDocumentView");
                         }
+                        
                         swfNode = fileNode.addNode("swfView", "nt:resource");
                     }
 
@@ -293,6 +296,8 @@ public class DocumentViewerServiceImpl implements DocumentViewerService {
                                 System.currentTimeMillis() - timer);
                     }
                 }
+            } catch (LockException e)  {
+            	logger.warn("Document preview cannot be generated because this node is locked (or archived): " + fileNode.toString());
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             } finally {
