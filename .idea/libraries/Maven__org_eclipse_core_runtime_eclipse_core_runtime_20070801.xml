@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.eclipse.core.runtime:eclipse-core-runtime:20070801">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/core/runtime/eclipse-core-runtime/20070801/eclipse-core-runtime-20070801.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/core/runtime/eclipse-core-runtime/20070801/eclipse-core-runtime-20070801-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/core/runtime/eclipse-core-runtime/20070801/eclipse-core-runtime-20070801-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

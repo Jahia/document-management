@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/api/document-management-api.iml" filepath="$PROJECT_DIR$/api/document-management-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/thumbnails/document-thumbnails.iml" filepath="$PROJECT_DIR$/thumbnails/document-thumbnails.iml" />
+      <module fileurl="file://$PROJECT_DIR$/viewer/web/document-viewer.iml" filepath="$PROJECT_DIR$/viewer/web/document-viewer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/viewer/document-viewer-root.iml" filepath="$PROJECT_DIR$/viewer/document-viewer-root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/viewer/service/document-viewer-service.iml" filepath="$PROJECT_DIR$/viewer/service/document-viewer-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jahia-document-management-root.iml" filepath="$PROJECT_DIR$/jahia-document-management-root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/video-thumbnails/video-thumbnails.iml" filepath="$PROJECT_DIR$/video-thumbnails/video-thumbnails.iml" />
+    </modules>
+  </component>
+</project>
+

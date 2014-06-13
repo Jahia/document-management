@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="DEFAULT_COMPILER" value="Javac" />
+    <resourceExtensions />
+    <wildcardResourcePatterns>
+      <entry name="!?*.java" />
+      <entry name="!?*.form" />
+      <entry name="!?*.class" />
+      <entry name="!?*.groovy" />
+      <entry name="!?*.scala" />
+      <entry name="!?*.flex" />
+      <entry name="!?*.kt" />
+      <entry name="!?*.clj" />
+    </wildcardResourcePatterns>
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="document-management-api" />
+        <module name="document-thumbnails" />
+        <module name="document-viewer" />
+        <module name="document-viewer-service" />
+        <module name="video-thumbnails" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="document-management-api" target="1.6" />
+      <module name="document-thumbnails" target="1.6" />
+      <module name="document-viewer" target="1.6" />
+      <module name="document-viewer-root" target="1.6" />
+      <module name="document-viewer-service" target="1.6" />
+      <module name="jahia-document-management-root" target="1.6" />
+      <module name="video-thumbnails" target="1.6" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
+

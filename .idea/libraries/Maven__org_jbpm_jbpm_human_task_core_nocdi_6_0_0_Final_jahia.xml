@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jbpm:jbpm-human-task-core:nocdi:6.0.0.Final-jahia">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jbpm/jbpm-human-task-core/6.0.0.Final-jahia/jbpm-human-task-core-6.0.0.Final-jahia-nocdi.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jbpm/jbpm-human-task-core/6.0.0.Final-jahia/jbpm-human-task-core-6.0.0.Final-jahia-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jbpm/jbpm-human-task-core/6.0.0.Final-jahia/jbpm-human-task-core-6.0.0.Final-jahia-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

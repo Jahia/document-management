@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.kie:kie-spring:6.0.0.Final-jahia">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kie/kie-spring/6.0.0.Final-jahia/kie-spring-6.0.0.Final-jahia.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kie/kie-spring/6.0.0.Final-jahia/kie-spring-6.0.0.Final-jahia-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kie/kie-spring/6.0.0.Final-jahia/kie-spring-6.0.0.Final-jahia-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
