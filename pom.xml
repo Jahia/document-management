@@ -47,7 +47,7 @@
     </parent>
     <artifactId>jahia-document-management-root</artifactId>
     <name>Jahia Document Management Root</name>
-    <version>1.3-SNAPSHOT</version>    
+    <version>1.2-SNAPSHOT</version>    
     <packaging>pom</packaging>
     <description>Jahia collection of document management modules</description>
     
