@@ -57,6 +57,21 @@
         <developerConnection>scm:git:git@github.com:Jahia/document-management.git</developerConnection>
     </scm>
     
+    <distributionManagement>
+        <repository>
+            <id>jahia-releases</id>
+            <url>https://devtools.jahia.com/nexus/content/repositories/jahia-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>jahia-snapshots</id>
+            <url>https://devtools.jahia.com/nexus/content/repositories/jahia-snapshots</url>
+        </snapshotRepository>
+        <site>
+            <id>jahia.website</id>
+            <url>file://${jahia.site.path}</url>
+        </site>
+    </distributionManagement>
+    
     <repositories>
         <repository>
             <id>jahiaRepository</id>
