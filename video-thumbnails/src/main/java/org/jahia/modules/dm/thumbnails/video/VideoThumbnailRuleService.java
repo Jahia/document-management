@@ -160,7 +160,7 @@ public class VideoThumbnailRuleService {
         jobDataMap.put(VideoThumbnailJob.THUMBNAIL_OFFSET, thumbnailOffset);
         jobDataMap.put(VideoThumbnailJob.THUMBNAIL_SIZE, thumbnailSize);
 
-        schedulerService.scheduleJobNow(jobDetail);
+        schedulerService.scheduleJobAtEndOfRequest(jobDetail);
     }
 
     public void setAsBackgroundJob(boolean asBackgorundJob) {

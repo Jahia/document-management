@@ -156,7 +156,7 @@ public class DocumentThumbnailRuleService {
         jobDataMap.put(DocumentThumbnailJob.THUMBNAIL_NAME, thumbnailName);
         jobDataMap.put(DocumentThumbnailJob.THUMBNAIL_SIZE, thumbnailSize);
 
-        schedulerService.scheduleJobNow(jobDetail);
+        schedulerService.scheduleJobAtEndOfRequest(jobDetail);
     }
 
     public void setAsBackgroundJob(boolean asBackgorundJob) {
