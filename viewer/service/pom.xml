@@ -77,7 +77,7 @@
   <parent>
     <groupId>org.jahia.modules</groupId>
     <artifactId>document-viewer-root</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.0.2</version>
   </parent>
   <artifactId>document-viewer-service</artifactId>
   <packaging>bundle</packaging>
@@ -87,7 +87,7 @@
     <dependency>
       <groupId>org.jahia.modules</groupId>
       <artifactId>document-management-api</artifactId>
-      <version>2.0.2-SNAPSHOT</version>
+      <version>2.0.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
