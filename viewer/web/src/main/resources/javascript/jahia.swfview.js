@@ -4,7 +4,7 @@
  * @url		http://www.jahia.org/
  * @author	Sergiy Shyrkov <sergiy.shyrkov@jahia.com>
  * @version	1.1
- * Copyright (C) 2002-2014 Jahia Solutions Group SA. All rights reserved.
+ * Copyright (C) 2002-2015 Jahia Solutions Group SA. All rights reserved.
  */
 ;(function($) {
 	$.fn.docViewer = function(options) {
