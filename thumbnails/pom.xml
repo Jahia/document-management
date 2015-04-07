@@ -91,6 +91,22 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.gemini.blueprint</groupId>
+      <artifactId>gemini-blueprint-core</artifactId>
+      <version>${gemini.blueprint.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>spring-context</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>spring-beans</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
       <groupId>org.icepdf</groupId>
       <artifactId>icepdf-core</artifactId>
       <version>5.0.5</version>
