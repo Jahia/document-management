@@ -83,32 +83,33 @@ import org.slf4j.LoggerFactory;
 
 /**
  * OSGi component for obtaining various document management services.
- * 
+ *
  * @author Sergiy Shyrkov
  */
 public class DocumentManagement implements BundleContextAware {
 
     private static DocumentManagement instance;
-
     private static final Logger logger = LoggerFactory.getLogger(DocumentManagement.class);
+
+    private BundleContext bundleContext;
+    private DocumentConverterService documentConverterService;
+    private DocumentThumbnailService documentThumbnailService;
+    private DocumentViewerService documentViewerService;
+    private VideoThumbnailService videoThumbnailService;
+
+    private DocumentManagement() {
+    }
 
     public static DocumentManagement getInstance() {
         if (instance == null) {
-            instance = new DocumentManagement();
+            synchronized (DocumentManagement.class) {
+                if (instance == null) {
+                    instance = new DocumentManagement();
+                }
+            }
         }
-
         return instance;
     }
-
-    private BundleContext bundleContext;
-
-    private DocumentConverterService documentConverterService;
-
-    private DocumentThumbnailService documentThumbnailService;
-
-    private DocumentViewerService documentViewerService;
-
-    private VideoThumbnailService videoThumbnailService;
 
     public void bindDocumentThumbnailService(ServiceReference ref) {
         documentThumbnailService = (DocumentThumbnailService) bundleContext.getService(bundleContext
