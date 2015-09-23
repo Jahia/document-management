@@ -88,7 +88,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DocumentManagement implements BundleContextAware {
 
-    private static DocumentManagement instance;
+    private static volatile DocumentManagement instance;
     private static final Logger logger = LoggerFactory.getLogger(DocumentManagement.class);
 
     private BundleContext bundleContext;
