@@ -152,7 +152,9 @@ public class PDFBoxPDF2ImageConverterService extends AbstractPDF2ImageConverterS
                             + " of the supplied input stream", e);
         } finally {
             try {
-                pdfDoc.close();
+                if (pdfDoc != null) {
+                    pdfDoc.close();
+                }
             } catch (Exception e) {
                 // ignore
             }
