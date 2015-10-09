@@ -77,7 +77,7 @@
   <parent>
     <groupId>org.jahia.modules</groupId>
     <artifactId>jahia-document-management-root</artifactId>
-    <version>2.0.3</version>
+    <version>2.0.4-SNAPSHOT</version>
   </parent>
   <artifactId>document-management-api</artifactId>
   <packaging>bundle</packaging>
