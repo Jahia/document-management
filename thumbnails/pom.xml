@@ -100,6 +100,7 @@
                             sun.security.action;resolution:=optional,
                             ${jahia.modules.importPackage},
                             *</Import-Package>
+            <Export-Package>org.jahia.modules.dm.thumbnails</Export-Package>
             <_removeheaders>Include-Resource,
                             Private-Package,
                             Embed-Dependency,
