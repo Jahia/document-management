@@ -93,6 +93,7 @@
         <configuration>
           <instructions>
             <Jahia-Depends>document-management-api</Jahia-Depends>
+            <Export-Package>org.jahia.modules.dm.thumbnails.video</Export-Package>
             <_removeheaders>Include-Resource,
                             Private-Package,
                             Embed-Dependency,
