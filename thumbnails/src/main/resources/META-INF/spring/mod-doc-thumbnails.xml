@@ -37,10 +37,6 @@
     </bean>
     
     <bean id="ICEpdfPDF2ImageConverterService" class="org.jahia.modules.dm.thumbnails.impl.ICEpdfPDF2ImageConverterService"/>
-    
-    <!--
-    <bean id="PDFBoxPDF2ImageConverterService" class="org.jahia.modules.dm.thumbnails.impl.PDFBoxPDF2ImageConverterService"/>
-    -->
 
     <osgi:service id="DocumentThumbnailServiceOsgi" ref="DocumentThumbnailService" interface="org.jahia.dm.thumbnails.DocumentThumbnailService"/>
 </beans>
