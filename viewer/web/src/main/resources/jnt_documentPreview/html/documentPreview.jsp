@@ -15,26 +15,29 @@
         (<fmt:message key="jnt_documentPreview.noPreviewInEditMode"/>)
     </c:if>
     <c:if test="${empty doc}">
-       <fmt:message key="jnt_documentPreview.noDocumentSelected"/> 
+       <fmt:message key="jnt_documentPreview.noDocumentSelected"/>
     </c:if>
 </c:if>
 <c:if test="${!renderContext.editMode}">
-<c:if test="${not empty doc && dm:isViewable(doc)}">
-    <c:url var="swfUrl" value="${dm:getViewUrl(doc, true)}" context="/"/>
-    <c:if test="${not empty swfUrl}">
-        <template:addResources type="javascript" resources="jquery.min.js,flexpaper/flexpaper.min.js,jahia.swfview.min.js"/>
-        <jcr:nodeProperty name="j:width" node="${currentNode}" var="width"/>
-        <jcr:nodeProperty name="j:height" node="${currentNode}" var="height"/>
-        <c:set var="w" value="${functions:default(width.string, '640')}"/><c:set var="w" value="${w == 0 ? '100%' : functions:stringConcatenation(w, 'px', '')}"/>
-        <c:set var="h" value="${functions:default(height.string, '480')}"/><c:set var="h" value="${h == 0 ? '100%' : functions:stringConcatenation(h, 'px', '')}"/>
-        <a class="jahia-doc-viewer" rel="${swfUrl}" style="width:${w}; height:${h}; display:block"></a>
-        <template:addResources type="inlinejavascript">
-            <script type="text/javascript">
-            $(document).ready(function() {
-                $("a.jahia-doc-viewer").docViewer();
-            });
-            </script>
-        </template:addResources>
+    <c:if test="${not empty doc && dm:isViewable(doc)}">
+        <c:set var="swfUrlTmp" value="${dm:getViewUrl(doc, true)}"/>
+        <c:if test="${not empty swfUrlTmp}">
+            <c:url var="swfUrl" value="${swfUrlTmp}" context="/"/>
+            <c:if test="${not empty swfUrl}">
+                <template:addResources type="javascript" resources="jquery.min.js,flexpaper/flexpaper.min.js,jahia.swfview.min.js"/>
+                <jcr:nodeProperty name="j:width" node="${currentNode}" var="width"/>
+                <jcr:nodeProperty name="j:height" node="${currentNode}" var="height"/>
+                <c:set var="w" value="${functions:default(width.string, '640')}"/><c:set var="w" value="${w == 0 ? '100%' : functions:stringConcatenation(w, 'px', '')}"/>
+                <c:set var="h" value="${functions:default(height.string, '480')}"/><c:set var="h" value="${h == 0 ? '100%' : functions:stringConcatenation(h, 'px', '')}"/>
+                <a class="jahia-doc-viewer" rel="${swfUrl}" style="width:${w}; height:${h}; display:block"></a>
+                <template:addResources type="inlinejavascript">
+                    <script type="text/javascript">
+                    $(document).ready(function() {
+                        $("a.jahia-doc-viewer").docViewer();
+                    });
+                    </script>
+                </template:addResources>
+            </c:if>
+        </c:if>
     </c:if>
-</c:if>
 </c:if>

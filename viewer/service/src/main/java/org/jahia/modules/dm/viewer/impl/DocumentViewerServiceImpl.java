@@ -51,7 +51,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
 
-import javax.jcr.lock.Lock;
 import javax.jcr.lock.LockException;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
@@ -62,6 +61,7 @@ import javax.jcr.version.VersionManager;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.jackrabbit.value.BinaryImpl;
+import org.drools.core.util.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.dm.DocumentOperationException;
 import org.jahia.dm.viewer.DocumentViewerService;
@@ -73,7 +73,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The document SWF view generation service that uses SWFTools.
- * 
+ *
  * @author Sergiy Shyrkov
  */
 public class DocumentViewerServiceImpl implements DocumentViewerService {
@@ -86,6 +86,7 @@ public class DocumentViewerServiceImpl implements DocumentViewerService {
 
     private String[] supportedDocumentFormats;
 
+    @Override
     public boolean canHandle(JCRNodeWrapper fileNode) throws RepositoryException {
         if (!isEnabled() || supportedDocumentFormats == null) {
             if (logger.isDebugEnabled()) {
@@ -102,23 +103,28 @@ public class DocumentViewerServiceImpl implements DocumentViewerService {
                         supportedDocumentFormats);
     }
 
+    @Override
     public File convert(File inputPdfFile) throws DocumentOperationException {
         return pdf2SWFConverter.convert(inputPdfFile);
     }
 
+    @Override
     public boolean convert(File inputPdfFile, File outputSwfFile) throws DocumentOperationException {
         return pdf2SWFConverter.convert(inputPdfFile, outputSwfFile);
     }
 
+    @Override
     public OutputStream convert(InputStream inputPdfStream) throws DocumentOperationException {
         return pdf2SWFConverter.convert(inputPdfStream);
     }
 
+    @Override
     public boolean convert(InputStream inputPdfStream, OutputStream outputSwfStream)
             throws DocumentOperationException {
         return pdf2SWFConverter.convert(inputPdfStream, outputSwfStream);
     }
 
+    @Override
     public boolean createPdfViewForNode(JCRNodeWrapper fileNode) throws RepositoryException,
             DocumentOperationException {
         if (!isEnabled() || !documentConverter.isEnabled()) {
@@ -176,6 +182,7 @@ public class DocumentViewerServiceImpl implements DocumentViewerService {
         return true;
     }
 
+    @Override
     public boolean createViewForNode(JCRNodeWrapper fileNode) throws RepositoryException,
             DocumentOperationException {
         if (!isEnabled() || supportedDocumentFormats == null) {
@@ -191,6 +198,12 @@ public class DocumentViewerServiceImpl implements DocumentViewerService {
         if (fileNode.isNodeType("nt:file")
                 && JCRContentUtils.isMimeTypeGroup(fileNode.getFileContent().getContentType(),
                         supportedDocumentFormats)) {
+
+            if (StringUtils.isEmpty(pdf2SWFConverter.getExecutablePath())) {
+                // PDF-to-SWF conversion disabled by configuration.
+                return false;
+            }
+
             String sourceContentType = fileNode.getFileContent().getContentType();
             File inFile = null;
             boolean sourceAvailable = true;
@@ -224,9 +237,9 @@ public class DocumentViewerServiceImpl implements DocumentViewerService {
                         swfNode = fileNode.getNode("swfView");
                     } catch (PathNotFoundException e) {
                         if (!fileNode.isNodeType("jmix:swfDocumentView")) {
-                    		fileNode.addMixin("jmix:swfDocumentView");
+                            fileNode.addMixin("jmix:swfDocumentView");
                         }
-                        
+
                         swfNode = fileNode.addNode("swfView", "nt:resource");
                     }
 
@@ -271,7 +284,7 @@ public class DocumentViewerServiceImpl implements DocumentViewerService {
                     }
                 }
             } catch (LockException e)  {
-            	logger.warn("Document preview cannot be generated because this node is locked (or archived): " + fileNode.toString());
+                logger.warn("Document preview cannot be generated because this node is locked (or archived): " + fileNode.toString());
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             } finally {
@@ -319,6 +332,7 @@ public class DocumentViewerServiceImpl implements DocumentViewerService {
         return pdf;
     }
 
+    @Override
     public boolean isEnabled() {
         return pdf2SWFConverter != null && pdf2SWFConverter.isEnabled();
     }

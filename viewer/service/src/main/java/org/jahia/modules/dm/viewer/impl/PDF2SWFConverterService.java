@@ -69,7 +69,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Document to SWF converter service that uses pdf2swf from SWFTools for file conversion.
- * 
+ *
  * @author Sergiy Shyrkov
  */
 public class PDF2SWFConverterService implements InitializingBean {
@@ -86,6 +86,7 @@ public class PDF2SWFConverterService implements InitializingBean {
 
     private File workingDir;
 
+    @Override
     public void afterPropertiesSet() throws Exception {
         if (autodetect) {
             doAutodetect();
@@ -270,7 +271,7 @@ public class PDF2SWFConverterService implements InitializingBean {
 
     /**
      * Returns <code>true</code> if the conversion service is enabled; <code>false</code> otherwise.
-     * 
+     *
      * @return <code>true</code> if the conversion service is enabled; <code>false</code> otherwise
      */
     public boolean isEnabled() {
@@ -279,7 +280,7 @@ public class PDF2SWFConverterService implements InitializingBean {
 
     /**
      * Enables or disables the conversion service
-     * 
+     *
      * @param activate
      *            set to <code>true</code> to enable the service; to <code>false</code> to disable it and to <code>auto</code> to
      *            auto-detect if the executable is present in the path and than enable the service.
@@ -291,6 +292,10 @@ public class PDF2SWFConverterService implements InitializingBean {
             this.autodetect = "auto".equalsIgnoreCase(activate)
                     || "autodetect".equalsIgnoreCase(activate);
         }
+    }
+
+    public String getExecutablePath() {
+        return this.executablePath;
     }
 
     public void setExecutablePath(String executablePath) {
