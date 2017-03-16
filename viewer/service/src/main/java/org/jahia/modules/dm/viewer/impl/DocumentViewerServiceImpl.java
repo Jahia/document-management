@@ -60,8 +60,8 @@ import javax.jcr.version.VersionManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jackrabbit.value.BinaryImpl;
-import org.drools.core.util.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.dm.DocumentOperationException;
 import org.jahia.dm.viewer.DocumentViewerService;
