@@ -299,7 +299,7 @@ public class PDF2SWFConverterService implements InitializingBean {
     }
 
     public void setExecutablePath(String executablePath) {
-        this.executablePath = executablePath;
+        this.executablePath = executablePath != null ? executablePath.trim() : executablePath;
     }
 
     public void setParameters(String parameters) {
