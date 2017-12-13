@@ -58,6 +58,5 @@
 
     <modules>
         <module>service</module>
-        <module>web</module>
     </modules>
 </project>
