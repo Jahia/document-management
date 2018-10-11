@@ -19,4 +19,5 @@ rule "Automatically generate thumbnail for the document"
 		    - the mimetype group is "pdf|word|rtf|excel|powerpoint|openoffice"
     then
         Create a document thumbnail of size 150
+        Create a document thumbnail of size 350
 end
