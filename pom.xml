@@ -54,7 +54,7 @@
     </parent>
     <artifactId>jahia-document-management-root</artifactId>
     <name>Jahia Document Management Root</name>
-    <version>2.0.10-SNAPSHOT</version>
+    <version>2.0.10</version>
     <packaging>pom</packaging>
     <description>Jahia collection of document management modules</description>
 
@@ -62,7 +62,7 @@
         <connection>scm:git:git@github.com:Jahia/document-management.git</connection>
         <url>scm:git:git@github.com:Jahia/document-management.git</url>
         <developerConnection>scm:git:git@github.com:Jahia/document-management.git</developerConnection>
-      <tag>HEAD</tag>
+      <tag>2_0_10</tag>
   </scm>
 
     <repositories>
