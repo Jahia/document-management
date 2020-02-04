@@ -49,12 +49,12 @@
     <parent>
         <artifactId>jahia-modules</artifactId>
         <groupId>org.jahia.modules</groupId>
-        <version>7.0.0.0</version>
+        <version>7.5.0.0-SNAPSHOT</version>
         <relativePath />
     </parent>
     <artifactId>jahia-document-management-root</artifactId>
     <name>Jahia Document Management Root</name>
-    <version>2.0.11-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>Jahia collection of document management modules</description>
 
