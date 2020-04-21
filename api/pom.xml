@@ -7,7 +7,7 @@
 
                                     http://www.jahia.com
 
-        Copyright (C) 2002-2019 Jahia Solutions Group SA. All rights reserved.
+        Copyright (C) 2002-2020 Jahia Solutions Group SA. All rights reserved.
 
         THIS FILE IS AVAILABLE UNDER TWO DIFFERENT LICENSES:
         1/GPL OR 2/JSEL
@@ -55,6 +55,9 @@
   <packaging>bundle</packaging>
   <name>Jahia Document Management API</name>
   <description>Jahia document management service API</description>
+  <properties>
+    <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.eclipse.gemini.blueprint</groupId>
