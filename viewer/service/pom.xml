@@ -49,7 +49,7 @@
   <parent>
     <groupId>org.jahia.modules</groupId>
     <artifactId>document-viewer-root</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>document-viewer-service</artifactId>
   <packaging>bundle</packaging>
@@ -62,7 +62,7 @@
     <dependency>
       <groupId>org.jahia.modules</groupId>
       <artifactId>document-management-api</artifactId>
-      <version>3.0.0</version>
+      <version>3.0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
