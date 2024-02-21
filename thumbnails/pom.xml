@@ -44,75 +44,80 @@
         please contact the sales department at sales@jahia.com.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.jahia.modules</groupId>
-    <artifactId>jahia-document-management-root</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>document-thumbnails</artifactId>
-  <packaging>bundle</packaging>
-  <name>Jahia Document Thumbnails</name>
-  <description>Jahia document thumbnails creation module</description>
-  <properties>
-    <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>org.jahia.modules</groupId>
-      <artifactId>document-management-api</artifactId>
-      <version>3.0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.gemini.blueprint</groupId>
-      <artifactId>gemini-blueprint-core</artifactId>
-      <version>${gemini.blueprint.version}</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>spring-context</artifactId>
-          <groupId>org.springframework</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>spring-beans</artifactId>
-          <groupId>org.springframework</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.icepdf.os</groupId>
-      <artifactId>icepdf-core</artifactId>
-      <version>5.1.0</version>
-    </dependency>
-  </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Jahia-Depends>document-management-api</Jahia-Depends>
-            <Import-Package>com.sun.image.codec.jpeg;resolution:=optional,
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jahia.modules</groupId>
+        <artifactId>jahia-document-management-root</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>document-thumbnails</artifactId>
+    <packaging>bundle</packaging>
+    <name>Jahia Document Thumbnails</name>
+    <description>Jahia document thumbnails creation module</description>
+    <properties>
+        <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"
+        </require-capability>
+        <jahia-module-signature>MC0CFQCWYQkIDwTk3XAQWSY36tds0Mg5ZwIUTJBi+8O5DIcmG9cKUFqzjcY2eV0=
+        </jahia-module-signature>
+        <jahia-depends>document-management-api</jahia-depends>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.jahia.modules</groupId>
+            <artifactId>document-management-api</artifactId>
+            <version>3.1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.gemini.blueprint</groupId>
+            <artifactId>gemini-blueprint-core</artifactId>
+            <version>${gemini.blueprint.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-context</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-beans</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.icepdf.os</groupId>
+            <artifactId>icepdf-core</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Import-Package>com.sun.image.codec.jpeg;resolution:=optional,
                             com.sun.medialib.mlib;resolution:=optional,
                             sun.awt.image;resolution:=optional,
                             sun.awt.image.codec;resolution:=optional,
                             sun.security.action;resolution:=optional,
                             ${jahia.modules.importPackage},
-                            *</Import-Package>
-            <Export-Package>org.jahia.modules.dm.thumbnails</Export-Package>
-            <_removeheaders>Include-Resource,
+                            *
+                        </Import-Package>
+                        <Export-Package>org.jahia.modules.dm.thumbnails</Export-Package>
+                        <_removeheaders>Include-Resource,
                             Private-Package,
                             Embed-Dependency,
                             Embed-Transitive,
-                            Jahia-Static-Resources</_removeheaders>
-             <Jahia-Signature>MCsCEzlF+KLOIn9tCfXIcDbBdFtiQo8CFFmjRVir6Wh8pdIdl9WjRdteg06x</Jahia-Signature>
-          </instructions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+                            Jahia-Static-Resources
+                        </_removeheaders>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

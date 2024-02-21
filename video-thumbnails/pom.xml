@@ -44,68 +44,72 @@
         please contact the sales department at sales@jahia.com.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.jahia.modules</groupId>
-    <artifactId>jahia-document-management-root</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>video-thumbnails</artifactId>
-  <packaging>bundle</packaging>
-  <name>Jahia Video Thumbnails</name>
-  <description>Jahia video thumbnails creation module</description>
-  <properties>
-    <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>org.jahia.modules</groupId>
-      <artifactId>document-management-api</artifactId>
-      <version>3.0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-exec</artifactId>
-      <version>1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.gemini.blueprint</groupId>
-      <artifactId>gemini-blueprint-core</artifactId>
-      <version>${gemini.blueprint.version}</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>spring-context</artifactId>
-          <groupId>org.springframework</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>spring-beans</artifactId>
-          <groupId>org.springframework</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-  </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Jahia-Depends>document-management-api</Jahia-Depends>
-            <Export-Package>org.jahia.modules.dm.thumbnails.video</Export-Package>
-            <_removeheaders>Include-Resource,
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jahia.modules</groupId>
+        <artifactId>jahia-document-management-root</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>video-thumbnails</artifactId>
+    <packaging>bundle</packaging>
+    <name>Jahia Video Thumbnails</name>
+    <description>Jahia video thumbnails creation module</description>
+    <properties>
+        <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"
+        </require-capability>
+        <jahia-depends>document-management-api</jahia-depends>
+        <jahia-module-signature>MCwCFGnWcYfjmT2ABLvgtVwCicQUjBO7AhRfXYR2hKm7MQ8kaZCvI8OXp1zlMw==
+        </jahia-module-signature>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.jahia.modules</groupId>
+            <artifactId>document-management-api</artifactId>
+            <version>3.1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-exec</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.gemini.blueprint</groupId>
+            <artifactId>gemini-blueprint-core</artifactId>
+            <version>${gemini.blueprint.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-context</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-beans</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Export-Package>org.jahia.modules.dm.thumbnails.video</Export-Package>
+                        <_removeheaders>Include-Resource,
                             Private-Package,
                             Embed-Dependency,
                             Embed-Transitive,
-                            Jahia-Static-Resources</_removeheaders>
-            <Jahia-Signature>MCwCFHIDzX3yzizBIeCkufTvtayllsNOAhQD2hIc/sGq1RU65+P3XjwcIom9vw==</Jahia-Signature>
-          </instructions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+                            Jahia-Static-Resources
+                        </_removeheaders>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

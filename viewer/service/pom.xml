@@ -49,7 +49,7 @@
   <parent>
     <groupId>org.jahia.modules</groupId>
     <artifactId>document-viewer-root</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>document-viewer-service</artifactId>
   <packaging>bundle</packaging>
@@ -57,12 +57,14 @@
   <description>Jahia document flash and HTML5 viewer service</description>
   <properties>
     <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
+    <jahia-module-signature>MCwCFC9AOeMDNaPkFsWPzXyIqH2VZD5IAhR4R2b6CPRiye10VqMZa04lUcmCUg==</jahia-module-signature>
+    <jahia-depends>document-management-api</jahia-depends>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.jahia.modules</groupId>
       <artifactId>document-management-api</artifactId>
-      <version>3.0.1-SNAPSHOT</version>
+      <version>3.1.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -80,14 +82,12 @@
         <configuration>
           <instructions>
             <Jahia-Module-Type>system</Jahia-Module-Type>
-            <Jahia-Depends>document-management-api</Jahia-Depends>
             <Export-Package>org.jahia.modules.dm.viewer</Export-Package>
             <_removeheaders>Include-Resource,
                             Private-Package,
                             Embed-Dependency,
                             Embed-Transitive,
                             Jahia-Static-Resources</_removeheaders>
-            <Jahia-Signature>MCwCFHUI7TZ6foaTAgd1UkybT3XEUi2hAhRUaPZ0wxyHCA3cYJfr1E/rnHMaqQ==</Jahia-Signature>
           </instructions>
         </configuration>
       </plugin>

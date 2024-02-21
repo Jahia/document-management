@@ -44,17 +44,18 @@
         please contact the sales department at sales@jahia.com.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>jahia-modules</artifactId>
         <groupId>org.jahia.modules</groupId>
         <version>8.0.0.0</version>
-        <relativePath />
+        <relativePath/>
     </parent>
     <artifactId>jahia-document-management-root</artifactId>
     <name>Jahia Document Management Root</name>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>Jahia collection of document management modules</description>
 
@@ -62,7 +63,11 @@
         <connection>scm:git:git@github.com:Jahia/document-management.git</connection>
         <url>scm:git:git@github.com:Jahia/document-management.git</url>
         <developerConnection>scm:git:git@github.com:Jahia/document-management.git</developerConnection>
-  </scm>
+    </scm>
+
+    <properties>
+        <jahia.plugin.version>6.9</jahia.plugin.version>
+    </properties>
 
     <repositories>
         <repository>
